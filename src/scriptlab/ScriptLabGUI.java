@@ -22,7 +22,11 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.TextArea;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -51,8 +55,10 @@ import java.awt.Color;
 import java.awt.SystemColor;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.LineNumberReader;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -61,11 +67,13 @@ public class ScriptLabGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtLibPath;
+	private JTextPane console;
+	private JEditorPane codeEditor;
 	private JButton btnReset;
 	private JButton btnClear;
 	private JButton btnRun;
-	private JButton btnLoad;
 	private JButton btnBrowser;
+	private JButton btnHelp;
 
 	/**
 	 * Create the frame & components.
@@ -111,7 +119,7 @@ public class ScriptLabGUI extends JFrame {
         
         
 		///////////////////////////////////////////////////////////////////////        
-		setBounds(100, 100, 619, 567);
+		setBounds(100, 100, 637, 567);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -135,9 +143,9 @@ public class ScriptLabGUI extends JFrame {
 		gbc_panel.gridy = 0;
 		contentPane.add(panel, gbc_panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{78, 70, 287, 78, 61, 0};
+		gbl_panel.columnWidths = new int[]{78, 70, 287, 78, 61, 0, 0};
 		gbl_panel.rowHeights = new int[]{23, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
@@ -166,7 +174,8 @@ public class ScriptLabGUI extends JFrame {
 		panel.add(btnReset, gbc_btnReset);
 		
 		txtLibPath = new JTextField();
-		txtLibPath.setText("D:\\jspluginpoi.js");
+		Main.txtLibPath = txtLibPath;
+		txtLibPath.setText("./main.js");
 		GridBagConstraints gbc_txtLibPath = new GridBagConstraints();
 		gbc_txtLibPath.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtLibPath.insets = new Insets(0, 0, 0, 5);
@@ -175,31 +184,32 @@ public class ScriptLabGUI extends JFrame {
 		panel.add(txtLibPath, gbc_txtLibPath);
 		txtLibPath.setColumns(10);
 		
-		///////////////////////////////////////////////////////////////////////
-		btnLoad = new JButton("Load");
-		
 		
 		///////////////////////////////////////////////////////////////////////		
 		btnBrowser = new JButton("Browser");
 		
 		GridBagConstraints gbc_btnBrowser = new GridBagConstraints();
-		gbc_btnBrowser.anchor = GridBagConstraints.NORTH;
-		gbc_btnBrowser.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnBrowser.insets = new Insets(0, 0, 0, 5);
+		gbc_btnBrowser.anchor = GridBagConstraints.NORTHEAST;
 		gbc_btnBrowser.gridx = 3;
 		gbc_btnBrowser.gridy = 0;
 		panel.add(btnBrowser, gbc_btnBrowser);
-		GridBagConstraints gbc_btnLoad = new GridBagConstraints();
-		gbc_btnLoad.anchor = GridBagConstraints.NORTH;
-		gbc_btnLoad.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnLoad.gridx = 4;
-		gbc_btnLoad.gridy = 0;
-		panel.add(btnLoad, gbc_btnLoad);
+		
+		
+		///////////////////////////////////////////////////////////////////////		
+		btnHelp = new JButton("?");
+
+		GridBagConstraints gbc_btnHelp = new GridBagConstraints();
+		gbc_btnHelp.anchor = GridBagConstraints.WEST;
+		gbc_btnHelp.insets = new Insets(0, 0, 0, 5);
+		gbc_btnHelp.gridx = 4;
+		gbc_btnHelp.gridy = 0;
+		panel.add(btnHelp, gbc_btnHelp);
 		
 		///////////////////////////////////////////////////////////////////////
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		splitPane.setResizeWeight(0.75);
+		splitPane.setResizeWeight(0.9);
 		GridBagConstraints gbc_splitPane = new GridBagConstraints();
 		gbc_splitPane.fill = GridBagConstraints.BOTH;
 		gbc_splitPane.insets = new Insets(0, 0, 5, 0);
@@ -209,7 +219,7 @@ public class ScriptLabGUI extends JFrame {
 		
 		
 		///////////////////////////////////////////////////////////////////////
-		Main.codeEditor = new JTextPane(){
+		codeEditor = new JTextPane(){
 			
 			public boolean getScrollableTracksViewportWidth(){
 				Component parent = getParent();
@@ -218,23 +228,23 @@ public class ScriptLabGUI extends JFrame {
 				return parent !=null ? (ui.getPreferredSize(this).width <= parent.getSize().width) : true;
 			}
 		};
-				
-		Main.codeEditor.setText("out(input());");
-		Main.codeEditor.setFont(new Font("Consolas", Font.BOLD, 13));
-		Main.codeEditor.setForeground(Color.GREEN);
-		Main.codeEditor.setCaretColor(Color.RED);
-		Main.codeEditor.setBackground(Color.BLACK);
+		Main.codeEditor = codeEditor;	
+		codeEditor.setText("outln(input());");
+		codeEditor.setFont(new Font("Consolas", Font.BOLD, 13));
+		codeEditor.setForeground(Color.GREEN);
+		codeEditor.setCaretColor(Color.RED);
+		codeEditor.setBackground(Color.BLACK);
 				
 		JScrollPane scrl_Code = new JScrollPane(
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS
 				);
-		scrl_Code.setViewportView(Main.codeEditor);
+		scrl_Code.setViewportView(codeEditor);
 		splitPane.setLeftComponent(scrl_Code);
 
 				
 		///////////////////////////////////////////////////////////////////////
-		Main.console = new JTextPane(){
+		console = new JTextPane(){
 			
 			public boolean getScrollableTracksViewportWidth(){
 				Component parent = getParent();
@@ -244,9 +254,10 @@ public class ScriptLabGUI extends JFrame {
 			}
 			
 		};
-		Main.console.setBackground(SystemColor.control);
-		Main.console.setEditable(false);
-		Main.console.setText(	Constants.GUIDE_BUILTINS		);
+		Main.console = console;
+		console.setBackground(SystemColor.control);
+		console.setEditable(false);
+		console.setText(	Constants.GUIDE_BUILTINS		);
 		
 		
 		///////////////////////////////////////////////////////////////////////		
@@ -255,10 +266,10 @@ public class ScriptLabGUI extends JFrame {
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS
 				);
-		scrl_Result.setViewportView(Main.console);
+		scrl_Result.setViewportView(console);
 		
 		splitPane.setRightComponent(scrl_Result);
-		Main.codeEditor.requestFocus();
+		codeEditor.requestFocus();
 		GridBagConstraints gbc_btnClear = new GridBagConstraints();
 		gbc_btnClear.anchor = GridBagConstraints.SOUTHWEST;
 		gbc_btnClear.gridx = 0;
@@ -273,6 +284,7 @@ public class ScriptLabGUI extends JFrame {
 		this.setVisible(true);
 	}
 	
+
 	/*
 	 * add listeners to components 
 	 */
@@ -280,18 +292,20 @@ public class ScriptLabGUI extends JFrame {
 		
 		///////////////////////////////////////////////////////////////////////
 		btnClear.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
-				Main.console.setText("");
+				console.setText("");
 			}
 		});
 		
 		///////////////////////////////////////////////////////////////////////
 		btnReset.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
 				FileWriter writer;
 				try {
-					writer = new FileWriter(new File(Constants.PATH_MAIN_JS));
-					writer.write(Main.codeEditor.getText());
+					writer = new FileWriter(new File(txtLibPath.getText().trim()));
+					writer.write(codeEditor.getText());
 					writer.flush();
 					writer.close();
 				} catch (Exception e1) {
@@ -304,11 +318,12 @@ public class ScriptLabGUI extends JFrame {
 		
 		///////////////////////////////////////////////////////////////////////
 		btnRun.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent arg0) {
 
 				try {
 					
-					Main.engine.eval(Main.codeEditor.getText());
+					Main.engine.eval(codeEditor.getText());
 
 				} catch (ScriptException e) {
 					e.printStackTrace();
@@ -318,30 +333,18 @@ public class ScriptLabGUI extends JFrame {
 		});
 		
 		///////////////////////////////////////////////////////////////////////
-		btnLoad.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(txtLibPath.getText() !=null &&
-						!txtLibPath.getText().isEmpty()){
-					
-					String lib = txtLibPath.getText().trim();
-					
-					String msg ;
-
-					if(builtins.eval(lib)){
-						msg = "Loaded library: "+lib+" successfully!";	
-						Console.print(msg, Console.MSGTYPE_INFO);
-					} else{
-						msg = "Loaded library: "+lib+" failed!";	
-						Console.print(msg, Console.MSGTYPE_ERROR);
-					}
-				}
-			}
-		});
-		
-		///////////////////////////////////////////////////////////////////////
 		btnBrowser.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser jfc = new JFileChooser();
+				
+				//1. get previous opened file's path
+				File f = new File(txtLibPath.getText().trim());
+				String pre_path = f.getParent();
+				
+				//2. point to it's parent folder
+				JFileChooser jfc = new JFileChooser(pre_path);
+				
+				//3. choice file
 				jfc.addChoosableFileFilter(new FileNameExtensionFilter(
 						"JavaScriptingLab Plugin (.js)", "js"));
 				
@@ -351,16 +354,21 @@ public class ScriptLabGUI extends JFrame {
 					File file = jfc.getSelectedFile();
 		            if (file != null) {
 		                path = file.getPath();
+		                txtLibPath.setText(path);
+		                
+		                //4. load content
+		                loadFileContentToEditor(path);
+						
 		            }
-					txtLibPath.setText(path);
+					
 				}
 				
 			}
+
 		});
 		
 		///////////////////////////////////////////////////////////////////////
-		
-		Main.codeEditor.addKeyListener(new KeyAdapter() {
+		codeEditor.addKeyListener(new KeyAdapter() {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -370,15 +378,15 @@ public class ScriptLabGUI extends JFrame {
 					try {
 						
 						// eval selected text
-						if(Main.codeEditor.getSelectedText()!= null &&
-							!Main.codeEditor.getSelectedText().isEmpty()){
+						if(codeEditor.getSelectedText()!= null &&
+							!codeEditor.getSelectedText().isEmpty()){
 							
-							Main.engine.eval(Main.codeEditor.getSelectedText());
+							Main.engine.eval(codeEditor.getSelectedText());
 						
 						//eval whole text 
 						}else{
 							
-							Main.engine.eval(Main.codeEditor.getText());
+							Main.engine.eval(codeEditor.getText());
 							
 						}
 
@@ -395,8 +403,8 @@ public class ScriptLabGUI extends JFrame {
 					try {
 						
 						// eval working line
-						String[] lines = Main.codeEditor.getText().split("[\r|\n]");
-						int ppos = Main.codeEditor.getSelectionStart();
+						String[] lines = codeEditor.getText().split("[\r|\n]");
+						int ppos = codeEditor.getSelectionStart();
 						int start = 0;
 						int end = 0;
 						String wline = "";
@@ -425,7 +433,63 @@ public class ScriptLabGUI extends JFrame {
 			}
 			
 		});
+		
 		///////////////////////////////////////////////////////////////////////		
+		txtLibPath.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String path = txtLibPath.getText();
+				if (path != null && !path.isEmpty()) {
+					loadFileContentToEditor(path);
+				}
+			}
+			
+		});
+		
+		///////////////////////////////////////////////////////////////////////	
+		btnHelp.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				JPopupMenu jpop = new JPopupMenu();
+				JMenuItem itmAbout = new JMenuItem("About");
+				itmAbout.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						
+						JOptionPane.showMessageDialog(ScriptLabGUI.this, 
+								Constants.ABOUT_PROGRAM,
+								"About",
+								 JOptionPane.PLAIN_MESSAGE
+								);
+	
+					}
+				});
+				jpop.add(itmAbout);
+				jpop.show(btnHelp, 0, btnHelp.getHeight());
+			}
+		});
+	}
+	
+	/*
+	 * 
+	 */
+	private void loadFileContentToEditor(String path) {
+		try{
+			String whole ="";
+			LineNumberReader nreader = new LineNumberReader(new FileReader(path));
+
+			String line;
+			while((line=nreader.readLine())!=null){
+				whole += line+"\n";
+			}
+			Main.codeEditor.setText(whole +"\n");
+
+			nreader.close();
+		}catch(Exception ex){
+			Console.print(ex.toString(), Console.MSGTYPE_ERROR);
+		}
 	}
 }
 

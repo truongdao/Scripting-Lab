@@ -8,6 +8,7 @@ import java.io.LineNumberReader;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.swing.JEditorPane;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import scriptlab.builtin.builtins;
@@ -22,7 +23,7 @@ public class Main {
 	public static boolean frame_disabled = false;
 	public static JTextPane console;
 	public static JEditorPane codeEditor;
-	
+	public static  JTextField txtLibPath;	
 	
 	/////////////////////// COMMON DATA //////////////////////////////////
 	
@@ -41,7 +42,7 @@ public class Main {
 		//2. invoke main.js
 		builtins.eval(Constants.PATH_MAIN_JS);
 		
-		//3. check if showing GUI is enabled] - done in main.js
+		//3. check if showing GUI is enabled - done in main.js
 		if(!frame_disabled){
 			Main.frame = new ScriptLabGUI();
 
@@ -52,7 +53,10 @@ public class Main {
 						//1. show frame
 						Main.frame.setVisible(true);
 						
-						//2. load content from main.js
+						//2. load address of main.js to address bar
+						txtLibPath.setText(Constants.PATH_MAIN_JS);
+						
+						//3. load content from main.js
 						String whole ="";
 						LineNumberReader nreader = new LineNumberReader(new FileReader(Constants.PATH_MAIN_JS));
 
