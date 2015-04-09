@@ -2,7 +2,7 @@ clear();
 
 function cmd(cmd_line){
 
-var grps = cmd_line.match(/(\w+)\s+(.*)/);
+var grps = (cmd_line+"\n").match(/(\w+)\s+(.*)/);
 
 var ps = java.lang.ProcessBuilder(grps[1], grps[2]);
 ps.redirectErrorStream(true);
