@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title>Scripting Lab document</title>
+</head>
+<body>
+
+<!---------------------------------------------------------------------------->
+<div id="div_menu">
+
+<h1>Index</h1>
+  <ol>
+	<li><a href="#div_about"		>About</a></li>
+	<li><a href="#div_installation"	>Installation</a></li>
+	<li><a href="#div_tutorials"	>Tutorials</a>
+		<ol type="a">
+			<li>Say 'helloworld'</li>
+			<li>GUI Interface</li>
+			<li>Using Libraries</li>
+			<li>Use cases</li>
+		</ol>
+	</li>
+	<li><a href="#div_references"	>References</a>
+		<ol type="a">
+			<li>Built-in functions</li>
+			<li>External libraries</li>
+		</ol>
+	</li>
+	<li><a href="#div_technical"	>Technical description</a>
+		<ol type="a">
+			<li>System architecture</li>
+			<li>Externing built-in functions</li>
+		</ol>
+	</li>
+	<li><a href="#div_contribution"	>Contribution</a></li>
+	
+  </ol>
+</div> <!--div "div_menu"-->
+<hr>
+
+<!---------------------------------------------------------------------------->
+<div id="div_about">
+<h1>About</h1>
+
+<p>
+Tài liệu này dùng cho việc giới thiệu bộ công cụ <b>Scripting Lab</b> dể xây dựng chương trình ứng dụng. Tài liệu cũng hướng dẫn cách tạo và chạy chương trình, cách mở rộng thư viện, bảng tra chức năng của một số thư viện. Kiến trúc của bộ công cụ cũng được đưa ra nhằm giúp mọi người hiểu và cải tiến trong tương lai.
+</p>
+
+<p>
+<b>Scripting Lab</b> là một phần mềm cung cấp chức năng biên tập và tạo môi trường thực thi các chương trình được viết bằng ngôn ngữ <code>JavaScript</code> trên máy tính như một ứng dụng desktop (not <strike>web application</strike>). Mục tiêu của <b>Scripting Lab</b> là tổng quan. Quan điểm của nó là đơn giản hóa việc phát triển chương trình bằng cách khuyến khích đóng gói các mô-đun cấp thấp thành các thư viện và chỉ được tích hợp khi cần.<br>
+Một số mô-đun giúp các lập trình viên (hoặc ai đó khác) xây dựng, thực thi, giám sát các quy trình phát triển sản phẩm (<code>phần mềm</code>) một cách nhanh chóng và hiệu quả. Thậm chí công đoạn trong quy trình đó có thể được lập trình để hoàn thành tự động khi các bước tiến hành là rõ ràng.
+</p>
+
+<p>
+Công cụ này tận dụng lợi thế dễ tiếp cận, mềm dẻo và sửa đổi ứng dụng dễ dàng của ngôn ngữ <code>JavaScript</code> làm ngôn ngữ chạy nền.
+</p>
+
+</div><!--div "div_about"-->
+
+
+<!---------------------------------------------------------------------------->
+<div id="div_installation">
+<h1>Installation</h1>
+
+</div> <!--div "div_installation"-->
+
+
+<!---------------------------------------------------------------------------->
+<div id="div_tutorials">
+<h1>Tutorials</h1>
+
+This tutorial is organised from low level to high level. Have fun :(!<br>
+
+		<ol type="1">
+			<!---------------------------------------------------------------------------->
+			<h3><li>Say 'helloworld'</li></h3>
+			
+			Đầu tiên hãy đảm bảo rằng chương trình đã được cài đặt đúng yêu cầu. Trong thử nghiệm này hãy đảm bảo rằng trong thư mục có cả tệp <code>ScriptLab.jar</code> và <code>main.js</code>, và nội dung của tệp <code>main.js</code> là trống.<br><br>
+			
+			<center><img src="resources/tut1_folder.JPG" alt="Right installation"></center> <br>
+			<hr>
+			Chương trình helloworld đầu tiên: <br><br>
+			1. Double click "ScriptingLab.jar"<br>
+			2. Nhập <code>outln('hello world!')</code> trong khung soạn thảo code màu đen<br>
+			3. Nhấp <b>Run</b><br>
+			4. Kiểm tra khung console phía dưới hiện dòng chữ <code>"hello world!"</code><br><br>
+			<center><img src="resources/tut1_hellow.JPG" alt="Output hello world"></center> 
+			<hr>
+			Chương trình helloworld đầu tiên đơn giản là in ra console một dòng chữ.<br>
+			<!---------------------------------------------------------------------------->
+			<h3><li>GUI Interface</li></h3>			
+			Giải thích một chút chức năng của giao diện:<br><br>
+			<ul>
+				<li>Nút <b>Run</b>: 				</li>
+				<li>Nút <b>Save</b>: 				</li>
+				<li>Nút <b>Browser</b>: 				</li>
+				<li>Nút <b>?</b>: 				</li>
+				<li>Nút <b>Clear</b>: 				</li>
+				<li><b>Thanh địa chỉ</b>: 				</li>
+				<li><b>Code editor</b>: 				</li>
+				<li><b>Output console</b>: 				</li>
+			</ul>
+			
+			<!---------------------------------------------------------------------------->
+			<h3><li>Using Libraries</li></h3>
+			
+			<!---------------------------------------------------------------------------->
+			<h3><li>Use cases</li></h3>
+		</ol>
+</div> <!--div "div_tutorials"-->
+
+
+<!---------------------------------------------------------------------------->
+<div id="div_references">
+<h1>References</h1>
+
+	<center><h1><font color="red">TODO</font></h1></center>
+	
+</div> <!--div "div_references"-->
+
+
+<!---------------------------------------------------------------------------->
+<div id="div_technical">
+<h1>Technical description</h1>
+
+</div> <!--div "div_technical"-->
+
+
+<!---------------------------------------------------------------------------->
+<div id="div_contribution">
+<h1>Contribution</h1>
+
+<p>
+<center>Copyright(c) 2015 Truong Dao</center>
+</p>
+</div> <!--div "div_contribution"-->
+
+
+</body>
+</html>
