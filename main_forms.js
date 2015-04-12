@@ -2,32 +2,26 @@ clear()
 eval('forms.js')
 
 var form1 = new Form([
-	{'0': Label('Name:'),  name: TextField('Truong') },
-	{'1': Label('Age:'),	  age: TextField(''), '':Label('*required')},
-	{'comp3': Label('Age:'), 'comp4': TextField('') },
-	]);
+	{'0': Label('Name:'),  name: TextField('Truong'), '1': CheckBox('Male') },
+	{'1': Label('Age:'),	  age: TextField(''), '':Label('*required')},   ]);
 
-form1.append(  {'abc': OKButton('OK')}   )
+form1.append(
+          {'1': Confirm('OK'), '2': Confirm('Cancel')}   )
 
-	//
-	var action = new Object();
-	action.actionPerformed = function( arg0 ) {
-				outln('click me!');
-		form1.rows[last_row].abc.up.hide();	
-		form1.rows[last_row].abc.up.ret = 10;
-	}
-	var act = convert('action', 'java.awt.event.ActionListener');
-	var last_row = form1.rows.length -1;
-	form1.rows[last_row].abc.real_comp.addActionListener(act);	
+for(var i=0; i<5; i++) form1.append_1( 
+	{'1': Label('Item'+i+':'),   item: TextField(''),} );
+
+form1.append(
+          {'0':Label(''), '': Label('<a href="">(c) 2015 Truong Dao </a>')}   )
 
 form1.show();
 
-if(form1.ret == 10){
-	outln(form1.rows[0]['name'].value())
-	outln('Form submitted!')
-} else {
-	outln('Form broken!')
-}
+if(form1.ret == 'OK')
+	outln('Form submitted!\tname: '+form1.rows[0]['name'].value())
+if(form1.ret == 'Cancel')
+	outln('Form cancel!')
+if(form1.ret == null)
+	outln('Form ignored!')
 
 
 
