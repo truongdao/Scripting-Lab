@@ -1,5 +1,9 @@
-clear();
 
+/**
+ * Invoke a line command provided by Command.exe of Windows.
+ * @param - {@code cmd_line} command as string.
+ * @return - result of execution.
+ */
 function cmd(cmd_line){
 
 var grps = (cmd_line+"\n").match(/(\w+)\s+(.*)/);

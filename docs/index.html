@@ -99,6 +99,7 @@ This tutorial is organised from low level to high level. Have fun :(!<br>
 				<li><b>Thanh địa chỉ</b>: 				</li>
 				<li><b>Code editor</b>: 				</li>
 				<li><b>Output console</b>: 				</li>
+				<li><b>Phím tắt</b>:					</li>
 			</ul>
 			
 			<!---------------------------------------------------------------------------->
@@ -114,8 +115,481 @@ This tutorial is organised from low level to high level. Have fun :(!<br>
 <div id="div_references">
 <h1>References</h1>
 
-	<center><h1><font color="red">TODO</font></h1></center>
+	<ol type="1">
+		<!---------------------------------------------------------------------------->
+		<h3><li>Built-in functions</li></h3>
+			
+			<ul>
+			<li><!-- library description------------------------------------------------->
+			
+				<code><font color="BLUE">
+				<b>builtins.js</b></font></code> <br><br>
+				
+				Thư viện này cung cấp những hàm nhập xuất dữ liệu căn bản nhất cũng và các hàm thao tác hệ thống như nạp một thư viện hay tương tác các đối tượng của javascript engine với các đối tượng của Java.<br>
+				Thư viện này thì được nạp trong quá trình khởi động hệ thống. Tệp mã nguồn script cũng được nén cùng gói chương trình nên người sử dụng không thấy được tệp <code>builtins.js</code><br><br>
+
+				<!-- functions description-->
+				
+				<table border="1" style="width:100%">
+					<tr><td bgcolor="aqua"><b>Modifier and Type</b></td> 
+					<td bgcolor="aqua"><b>Description</b></td></tr>
+					
+					<tr><td><b><code>
+					Object
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					function convert( jso_name, jv_classpath_str )
+					</b></code></a><br><br>
+					Tạo đối tượng java mới có java interface là <code>jv_classpath_str</code> và nội dung là một javascript object <code>jso_name</code> theo tên.
+					</td></tr>
+
+					<tr><td><b><code>
+					Object
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					function find( var_name )
+					</b></code></a><br><br>
+					Tìm và trả về một đối tượng javascript bởi chuổi string <code>var_name</code>có tên của nó. Cung cấp cho người dùng phương pháp truy cập biến javascript bằng tên động.
+					</td></tr>
+					
+					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					function copy(var_name, ref_obj_name)
+					</b></code></a><br><br>
+					Tạo một biến toàn cục javascript đặt tên theo <code>var_name</code> và giá trị khởi tạo là một javascript object có tên <code>ref_obj_name</code>
+					</td></tr>
+					
+					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					function disableGUI(option)
+					</b></code></a><br><br>
+					Tắt giao diện Window hoặc mở lại, tùy <code>option</code> là <code>true/false</code>.
+					</td></tr>
+					
+					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					function eval( js_path )
+					</b></code></a><br><br>
+					Nạp và thực thi một tệp <code>.js</code> tại đường dẫn <code>js_path</code>, thường thì đó là một thư viện.
+					</td></tr>
+					
+					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					function loadjar( jar_url )
+					</b></code></a><br><br>
+					Thêm một tệp thư viện <code>.jar</code> tại đường dẫn <code>jar_url</code> vào <code>JVM classpath</code>. Từ đây các gói trong thư viện thể được <code>import</code> trong môi trường javascript. Bước này được coi như là "nạp một thư viện gốc".
+					</td></tr>
+					
+					<tr><td><b><code>
+					boolean
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					<strike>function loadclass( module_name, jar_url, class_path )</strike>
+					</b></code></a><br><br>
+					(bỏ! dùng <code>loadjar</code> thay vì)<br>
+					Nạp và tạo một đối tượng javascript <code>module_name</code>tương ứng đối tượng java có <code>class_path</code> trong một thư viện <code>.jar</code> tại đường dẫn <code>jar_url</code>.
+					</td></tr>
+
+					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					function out( msg )
+					</b></code></a><br><br>
+					In một chuổi <code>msg</code> ra màn hình console (của ScriptLab hay JVM, tùy cấu hình).
+					</td></tr>
+
+					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					function outln( msg )
+					</b></code></a><br><br>
+					In ra một chuổi <code>msg</code> trên dòng mới của màn hình console (của Script Lab hay JVM, tùy cấu hình).
+					</td></tr>
+
+					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					function clear()
+					</b></code></a><br><br>
+					Xóa nội dung màn hình console của Scripting Lab.
+					</td></tr>
+
+					<tr><td><b><code>
+					string
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					function input()
+					</b></code></a><br><br>
+					Hiện cửa sổ nhập một chuỗi string và trả về.
+					</td></tr>		
+
+					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					function exit()
+					</b></code></a><br><br>
+					Thoát khỏi chương trình.
+					</td></tr>
+					
+					
+				</table><br><br>
+				
+				<!-- functions in detail-->
+
+				<b>Details</b><br>
+				<font color="BLUE"> cần bổ sung... </font>
+				<hr><br>
+				
+			</li>
+			</ul>
+			
+		<!---------------------------------------------------------------------------->
+		<h3><li>External libraries</li></h3>
+		
+			<ul>
+			<li><!-- library description------------------------------------------------->
+			
+				<code><font color="BLUE">
+				<b>cmd.js</b></font></code> <br><br>
+				
+				Thư viện cung cấp hàm để thực thi các lệnh <code>command line</code> của Windows. 
+				<br><br>
+
+				<!-- functions description-->
+				
+				<table border="1" style="width:100%">
+					<tr><td bgcolor="aqua"><b>Modifier and Type</b></td> 
+					<td bgcolor="aqua"><b>Description</b></td></tr>
+					
+					<tr><td><b><code>
+					string
+					</code></b></td> <td><a href="#cmd_cmd" style="text-decoration:none;"><code><b>
+					function cmd( cmd_line )
+					</b></code></a><br><br>
+					Thực thi một lệnh <code>command line</code> của Windows và trả về kết quả thực hiện.
+					</td></tr>	
+					
+					
+				</table><br><br>
+				
+				<!-- functions in detail-->
+
+				<b>Details</b><br><br>
+				<ul>
+				
+				<li>
+					<div id="cmd_cmd">
+					<code><b>function cmd( cmd_line ) : string </b></code><br><br>
+					Các lệnh này được hỗ trợ bởi Command.exe. Ví dụ : <code>cmd('help'), cmd('tree'),...</code>
+					</div>
+				</li>
+				
+				</ul>
+				<hr><br>
+			</li>
+			
+			<li><!-- library description------------------------------------------------->
+			
+				<code><font color="BLUE">
+				<b>excel.js</b></font></code> <br><br>
+				
+				Thư viện này cung cấp các đối tượng và phương thức để thao tác với dữ liệu trên tệp Excel (.xls).<br>
+				Chuỗi truy cập <code>Mở tệp excel -> mở sheet -> truy cập cell</code>, tương ứng với các đối tượng <code>Xls -> Book -> Sheet -> Cell</code> được cung cấp bởi thư viện này.<br>
+				Các đối tượng <code>Book, Sheet, Cell</code> không chứa các hàm thao tác trực tiếp với các thành phần của file Excel mà chỉ cung cấp các hàm lấy về đối tượng con, cháu của nó. Thay vào đó chúng sử dụng kỹ thuật đóng gói để chứa một đối tượng "thật" tên là <code>.r</code> có khả năng thao tác trên trên file excel. Đối tượng <code>.r</code> này là một thực thể Java của thư viện POI. <br><br>
+				
+				<table border="1">
+				<tr><td bgcolor="chartreuse">excel.js object</td> <td bgcolor="chartreuse">POI object</td></tr>
+				<tr><td>Xls</td> 
+						<td><code>none</code></td></tr>
+				<tr><td>Book.r</td> 
+						<td><code><a style="text-decoration:none;" href="https://poi.apache.org/apidocs/org/apache/poi/hssf/usermodel/HSSFWorkbook.html">
+						org.apache.poi.hssf.usermodel.HSSFWorkbook</a></code></td></tr>
+				<tr><td>Sheet.r</td> 
+						<td><code><a style="text-decoration:none;"href="https://poi.apache.org/apidocs/org/apache/poi/hssf/usermodel/HSSFSheet.html">
+						org.apache.poi.hssf.usermodel.HSSFSheet</a></code></td></tr>				
+				<tr><td>Cell.r</td> 
+						<td><code><a style="text-decoration:none;"href="https://poi.apache.org/apidocs/org/apache/poi/hssf/usermodel/HSSFCell.html">
+						org.apache.poi.hssf.usermodel.HSSFCell</a></code></td></tr>				
+								
+				</table><br>
+				
+				Ví dụ:<code>
+				
+				<br>var book = Xls.open('input.xls');
+				<br>var sheet = book.sheet(0);
+				<br>var cell = sheet.cell( 0, 0);
+				<br>outln(cell.r.toString());
+				<br><br></code>
+				
+				Chương trình sẽ in ra nội dung cell ở dòng 0, cột 0, sheet đầu tiên của file excel 'input.xls'. Chú ý <code>cell.r</code> trả về đối tượng <code>java Cell</code> của thư viện <code>POI, toString()</code> là hàm của <code>java Cell</code>, hãy tra bảng tham khảo của thư viện này để biết các chức năng được cung cấp.<br><br>
+
+				<!-- functions description-->
+				
+				<table border="1" style="width:100%">
+					<tr><td bgcolor="aqua"><b>Modifier and Type</b></td> 
+					<td bgcolor="aqua"><b>Description</b></td></tr>
+					
+					
+					<!-------------------------------------------->
+					<tr><td><b><code>
+					Book
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Xls.open( file_path )
+					</b></code></a><br><br>
+					Mở một tệp .xls tại đường dẫn <code>file_path</code> và trả về đối tượng <code>Book</code> để thao tác.
+					</td></tr>	
+					
+					
+					<!-------------------------------------------->
+					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Book.save()
+					</b></code></a><br><br>
+					Lưu những thay đổi trên đối tượng <code>Book</code> này xuống tệp Excel.
+					</td></tr>						
+
+					<tr><td><b><code>
+					Sheet
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Book.sheet ( id )
+					</b></code></a><br><br>
+					Mở một <code>Sheet</code> theo tên của nó hay chỉ số thứ tự. Có thể là <code>book.sheet(0)</code> hoặc <code>book.sheet('Sheet1')</code>.
+					</td></tr>		
+
+					<tr><td><b><code>
+					Sheet[]
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Book.sheets ()
+					</b></code></a><br><br>
+					Trả về toàn bộ các <code>Sheet</code> mà <code>Book</code> đang có.
+					</td></tr>							
+
+					<tr><td><b><code>
+					Cell
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Book.cell ( sheet_id, row, col )
+					</b></code></a><br><br>
+					Trả về một <code>Cell</code> tại dòng <code>row</code>, cột <code>col</code>, tại <code>Sheet</code> có mã <code>sheet_id</code> (thứ tự hoặc tên) trong <code>Book</code> đang mở. (Truy xuất nhanh)
+					</td></tr>	
+					
+					<tr><td><b><code>
+					Cell[]
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Book.cells ( sheet_id)
+					</b></code></a><br><br>
+					Trả về toàn bộ <code>Cell</code> trong <code>Sheet</code> có mã <code>sheet_id</code> (thứ tự hoặc tên) trong <code>Book</code> đang mở.(Truy xuất nhanh)
+					</td></tr>
+					
+					<tr><td><b><code>
+					HSSFWorkbook
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Book.r
+					</b></code></a><br><br>
+					Đối tượng <code><a style="text-decoration:none;" href="https://poi.apache.org/apidocs/org/apache/poi/hssf/usermodel/HSSFWorkbook.html">
+						org.apache.poi.hssf.usermodel.HSSFWorkbook</a></code>
+					</td></tr>	
+
+					
+					<!-------------------------------------------->
+					<tr><td><b><code>
+					Cell
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Sheet.cell ( row, col )
+					</b></code></a><br><br>
+					Trả về <code>Cell</code> ở dòng <code>row</code>, cột <code>col</code> trong <code>Sheet</code> đang mở.
+					</td></tr>							
+					
+					<tr><td><b><code>
+					Cell[]
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Sheet.cells ( )
+					</b></code></a><br><br>
+					Trả về toàn bộ <code>Cell</code> trong <code>Sheet</code> đang mở.
+					</td></tr>		
+					
+					<tr><td><b><code>
+					HSSFSheet
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Sheet.r
+					</b></code></a><br><br>
+					Đối tượng <code><a style="text-decoration:none;"href="https://poi.apache.org/apidocs/org/apache/poi/hssf/usermodel/HSSFSheet.html">
+						org.apache.poi.hssf.usermodel.HSSFSheet</a></code>
+					</td></tr>		
+
+					
+					<!-------------------------------------------->
+					<tr><td><b><code>
+					HSSFCell
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Cell.r
+					</b></code></a><br><br>
+					Đối tượng <code><a style="text-decoration:none;"href="https://poi.apache.org/apidocs/org/apache/poi/hssf/usermodel/HSSFCell.html">
+						org.apache.poi.hssf.usermodel.HSSFCell</a></code>
+					</td></tr>						
+					
+					
+				</table><br><br>
+				
+				<!-- functions in detail-->
+
+				<b>Details</b><br>
+				<font color="BLUE"> cần bổ sung... </font>
+				<hr><br>
+			</li>
+
+			<li><!-- library description------------------------------------------------->
+			
+				<code><font color="BLUE">
+				<b>forms.js</b></font></code> <br><br>
+				
+				Thư viện cung cấp phương thức để xây dựng một biểu mẫu nhập dữ liệu có giao diện.<br>
+				
+				Ví dụ:<br><code>
+				<pre>
+var form1 = new Form([
+	{'0': Label('Name:'),  name: TextField('Truong'),  '1':  CheckBox('Male') },
+	{'1': Label('Age:'),   age:  TextField(''),        '':   Label('*required')},   ]);
+		
+form1.append(
+	[Confirm('OK'),  Confirm('Cancel')]     );
 	
+form1.show();
+
+if(form1.ret == 'OK')
+	outln('Form submitted!\tname: '+form1.rows[0]['name'].value());
+if(form1.ret == 'Cancel')
+	outln('Form cancel!');
+if(form1.ret == null)
+	outln('Form ignored!');			
+				</pre></code>
+				
+				Form is shown:<br>
+				<center><img src="resources/forms_ref_ex.JPG"></center>
+
+				<br><br>
+				<!-- functions description-->
+				
+				<table border="1" style="width:100%">
+					<tr><td bgcolor="aqua"><b>Modifier and Type</b></td> 
+					<td bgcolor="aqua"><b>Description</b></td></tr>
+					
+					<tr><td><b><code>
+					Form
+					</code></b></td> <td><a href="#cmd_cmd" style="text-decoration:none;"><code><b>
+					new  Form( ls_items )
+					</b></code></a><br><br>
+					Khởi tạo danh sách các phần tử trong biểu mẫu từ <code>ls_items</code>.<br>
+					Đó là một mảng các đối tượng javascript (định dạng nhìn giống JSON), mỗi phần tử của mảng đại diện cho một dòng; mỗi dòng là một đối tượng (hoặc mảng) mà các phần tử của nó đều có thuộc tính <code>.r</code> là một đối tượng <code>Java</code> dẫn xuất từ lớp <code>javax.swing.JComponent</code>.
+					</td></tr>	
+					
+					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#cmd_cmd" style="text-decoration:none;"><code><b>
+					Form.append( item )
+					</b></code></a><br><br>
+					Chèn một dòng <code>item</code>vào cuối danh sách.<br>
+					Dòng này phải là một mảng đơn hoặc đối tượng có điều kiện như một dòng được mô tả trong đối tượng <code>ls_items</code> được mô tả trên.
+					</td></tr>	
+					
+					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#cmd_cmd" style="text-decoration:none;"><code><b>
+					Form.append_1( item )
+					</b></code></a><br><br>
+					Chèn một dòng <code>item</code> vào trước dòng cuối trong danh sách.<br> Dùng trong trường hợp đã thêm các nút xác nhận "OK" hoặc "Cancel" vào dòng cuối mà vẫn muốn mở rộng danh sách thuộc tính.
+					</td></tr>	
+					
+					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#cmd_cmd" style="text-decoration:none;"><code><b>
+					Form.show( )
+					</b></code></a><br><br>
+					Hiển thị Form và vô hiệu hóa giao diện chính.<br>
+					Sau khi Form đã được đóng lại, kiểm tra <code>Form.ret</code> để xem lý do nó đã bị đóng lại.
+					</td></tr>						
+					
+					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#cmd_cmd" style="text-decoration:none;"><code><b>
+					Form.hide( )
+					</b></code></a><br><br>
+					Ẩn Form đi.<br>
+					(Hiếm khi dùng!)
+					</td></tr>						
+
+					
+					<!--------------------------------->
+					<tr><td><b><code>
+					Component
+					</code></b></td> <td><a href="#cmd_cmd" style="text-decoration:none;"><code><b>
+					Component( )
+					</b></code></a><br><br>
+					Giao diện chung nhất của các đối tượng có thể thêm vào Form.<br>
+					Các thuộc tính phải có:<br>
+					<ul>
+					
+					<li><code>up</code></li>: tham chiếu đối tượng cha, thuộc tính này chỉ cần khai báo, nó sẽ được truyền giá trị bởi đối tượng nào sử dụng component này. Hữu ích khi xử lý sự kiện.
+					
+					<li><code>r</code></li>: Đối tượng Java cung cấp giao diện thật, phải dẫn xuất từ <code>javax.swing.JComponent</code> hoặc <code>java.awt.Component</code>
+					
+					<li><code>value() : string</code></li>: Hàm trả về giá trị /trạng thái của đối tượng, được gọi bởi người sử dụng Form</code>			
+					</td></tr>	
+					
+					
+					<!--------------------------------->
+					<tr><td><b><code>
+					Button
+					</code></b></td> <td><a href="#cmd_cmd" style="text-decoration:none;"><code><b>
+					Button( value )
+					</b></code></a><br><br>
+					Trả về đối tượng <code>Button</code> với nhãn <code>value</code> có thể đặt vào Form, chúng thì chứa một <code>Java JButton</code> ở trong. <code>Button.value()</code> trả về nhãn của <code>Button</code>. Đối tượng này không được cài sự kiện trước, có thể thêm sau theo ý người sử dụng.
+					</td></tr>						
+					
+					
+					<!--------------------------------->
+					<tr><td><b><code>
+					Confirm
+					</code></b></td> <td><a href="#cmd_cmd" style="text-decoration:none;"><code><b>
+					Confirm( value )
+					</b></code></a><br><br>
+					Trả về đối tượng <code>Confirm</code> với nhãn <code>value</code> có thể đặt vào Form, chúng là một Button được cài sự kiện để khi nhấn, chúng sẽ ẩn Form và trả đặt nhãn của nó <code>Confirm.value()</code> vào <code>Form.ret</code> như giá trị trả về.
+					</td></tr>		
+
+					
+					<!--------------------------------->
+					<tr><td><b><code>
+					Label
+					</code></b></td> <td><a href="#cmd_cmd" style="text-decoration:none;"><code><b>
+					Label( value )
+					</b></code></a><br><br>
+					Trả về đối tượng <code>Label</code> với nhãn <code>value</code> có thể đặt vào Form để dẫn giải, chúng thì chứa một <code>Java JLabel</code> ở trong. <code>JLabel.value()</code> trả về nhãn của <code>Label</code>.
+					</td></tr>	
+
+					
+					<!--------------------------------->
+					<tr><td><b><code>
+					TextField
+					</code></b></td> <td><a href="#cmd_cmd" style="text-decoration:none;"><code><b>
+					TextField( value )
+					</b></code></a><br><br>
+					Trả về đối tượng <code>TextField</code> để nhập giá trị khởi tạo với <code>value</code> có thể đặt vào Form, chúng thì chứa một <code>Java JTextField</code> ở trong. <code>JTextField.value()</code> trả về nội dung của <code>TextField</code>.
+					</td></tr>						
+					
+					
+				</table><br><br>
+				
+				<!-- functions in detail-->
+
+				<b>Details</b><br>
+				<font color="BLUE"> cần bổ sung... </font>
+				<hr><br>
+				
+				<hr><br>
+			</li>			
+			</ul>		
+	</ol>	
+
 </div> <!--div "div_references"-->
 
 

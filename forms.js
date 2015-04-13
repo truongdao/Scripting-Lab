@@ -48,7 +48,7 @@ function Form(ls_items){
 				gbc_btnRun.gridx = 	j;													
 				gbc_btnRun.gridy = 	i; 	
 				temp_name[i][x].up = this;				
-				panel.add(temp_name[i][x].real_comp, gbc_btnRun);						
+				panel.add(temp_name[i][x].r, gbc_btnRun);						
 				j++;																	
 			}																			
 		}		
@@ -108,7 +108,7 @@ function Component(init){
 	this.up = null;
 	
 	//real java.awt.Component
-	this.real_comp= null;	
+	this.r= null;	
 	
 	//abstract function to get value
 	this.value= function(){};
@@ -123,9 +123,9 @@ function Component(init){
  
 	var th = {			
 	'up': null,
-	'real_comp': new javax.swing.JButton(value),						
+	'r': new javax.swing.JButton(value),						
 	'value': function(){											
-		return th.real_comp.getText();									
+		return th.r.getText();									
 	}														
 	};																	
 	return th;															
@@ -140,9 +140,9 @@ function Confirm(value){
 													
 	var th = {			
 	'up': null,
-	'real_comp': new javax.swing.JButton(value),						
+	'r': new javax.swing.JButton(value),						
 	'value': function(){											
-		return th.real_comp.getText();									
+		return th.r.getText();									
 	}														
 	};																	
 
@@ -150,10 +150,10 @@ function Confirm(value){
 	__ConfirmButton_action = new Object();
 	__ConfirmButton_action.actionPerformed = function( arg0 ) {
 				th.up.hide();	
-				th.up.ret = th.real_comp.getText();
+				th.up.ret = th.r.getText();
 	}
 	var act = convert('__ConfirmButton_action', 'java.awt.event.ActionListener');
-	th.real_comp.addActionListener(act);	
+	th.r.addActionListener(act);	
 	
 	return th;															
 }
@@ -168,17 +168,17 @@ function Label(value){
 												
 	var th = {	
 	'up': null,	
-	'real_comp': new javax.swing.JEditorPane('text/html', 
+	'r': new javax.swing.JEditorPane('text/html', 
 					'<font size="3" face="Tahoma">' +
 					value+
 					'</font>'
 	),						
 	'value': function(){											
-		return th.real_comp.getText();									
+		return th.r.getText();									
 	}														
 	};	
-	th.real_comp.setEditable(false);
-	th.real_comp.setOpaque(false);
+	th.r.setEditable(false);
+	th.r.setOpaque(false);
 	return th;															
 }
 
@@ -191,9 +191,9 @@ function TextField(value){
 											
 	var th = {			
 	'up': null,	
-	'real_comp': new javax.swing.JTextField(value, 15),						
+	'r': new javax.swing.JTextField(value, 15),						
 	'value': function(){											
-		return th.real_comp.getText();									
+		return th.r.getText();									
 	}														
 	};																	
 	return th;															
@@ -208,9 +208,9 @@ function CheckBox(value){
 												
 	var th = {			
 	'up': null,	
-	'real_comp': new javax.swing.JCheckBox(value),						
+	'r': new javax.swing.JCheckBox(value),						
 	'value': function(){											
-		return th.real_comp.isSelected();									
+		return th.r.isSelected();									
 	}														
 	};																	
 	return th;															
