@@ -1,5 +1,4 @@
 clear()
-eval('forms.js')
 
 var form1 = new Form([
 	{'0': Label('Name:'),  name: TextField('Truong'), '1': CheckBox('Male') },

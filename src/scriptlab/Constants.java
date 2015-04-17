@@ -2,7 +2,8 @@ package scriptlab;
 
 public class Constants {
 
-	public static final String PATH_MAIN_JS = "./main.js";
+	public static final String PATH_CONFIG_JS = "ScriptingLab.data/config.js";
+	public static final String PATH_MAIN_JS = "ScriptingLab.data/main.js";
 	public static final  String PATH_BUILTINS_JS = "/scriptlab/builtin/builtins.js";
 	public static final String BUILTINS_NAME = "builtins";
 
