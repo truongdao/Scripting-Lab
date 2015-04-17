@@ -350,6 +350,14 @@ This tutorial is organised from low level to high level. Have fun :(!<br>
 					</td></tr>						
 
 					<tr><td><b><code>
+					void
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Book.saveAs( str_path)
+					</b></code></a><br><br>
+					Lưu đối tượng <code>Book</code> đang làm việc xuống một tệp Excel khác có tên <code>str_path</code>.
+					</td></tr>	
+					
+					<tr><td><b><code>
 					Sheet
 					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
 					Book.sheet ( id )
@@ -407,6 +415,22 @@ This tutorial is organised from low level to high level. Have fun :(!<br>
 					</b></code></a><br><br>
 					Trả về toàn bộ <code>Cell</code> trong <code>Sheet</code> đang mở.
 					</td></tr>		
+
+					<tr><td><b><code>
+					Sheet
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Sheet.right ( offset )
+					</b></code></a><br><br>
+					Lấy một Sheet bên phải và cách Sheet hiện tại số <code>offset</code> sheets.
+					</td></tr>	
+
+					<tr><td><b><code>
+					Sheet
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Sheet.left ( offset )
+					</b></code></a><br><br>
+					Lấy một Sheet bên trái và cách Sheet hiện tại số <code>offset</code> sheets.
+					</td></tr>	
 					
 					<tr><td><b><code>
 					HSSFSheet
@@ -417,6 +441,14 @@ This tutorial is organised from low level to high level. Have fun :(!<br>
 						org.apache.poi.hssf.usermodel.HSSFSheet</a></code>
 					</td></tr>		
 
+
+					<tr><td><b><code>
+					Book
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Cell.book
+					</b></code></a><br><br>
+					Trả về đối tượng Book đang chứa Sheet đó.
+					</td></tr>	
 					
 					<!-------------------------------------------->
 					<tr><td><b><code>
@@ -427,7 +459,58 @@ This tutorial is organised from low level to high level. Have fun :(!<br>
 					Đối tượng <code><a style="text-decoration:none;"href="https://poi.apache.org/apidocs/org/apache/poi/hssf/usermodel/HSSFCell.html">
 						org.apache.poi.hssf.usermodel.HSSFCell</a></code>
 					</td></tr>						
+
+					<tr><td><b><code>
+					Sheet
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Cell.sheet
+					</b></code></a><br><br>
+					Trả về đối tượng Sheet đang chứa Cell đó.
+					</td></tr>	
 					
+					<tr><td><b><code>
+					Cell
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Cell.down ( offset )
+					</b></code></a><br><br>
+					Lấy một Cell phía dưới và cách cell hiện tại số <code>offset</code> dòng.
+					</td></tr>							
+					
+
+					<tr><td><b><code>
+					Cell
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Cell.right ( offset )
+					</b></code></a><br><br>
+					Lấy một Cell bên phải và cách cell hiện tại số <code>offset</code> cột.
+					</td></tr>							
+					
+
+					<tr><td><b><code>
+					Cell
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Cell.up ( offset )
+					</b></code></a><br><br>
+					Lấy một Cell phía trên và cách cell hiện tại số <code>offset</code> dòng.
+					</td></tr>											
+					
+
+					<tr><td><b><code>
+					Cell
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Cell.left ( offset )
+					</b></code></a><br><br>
+					Lấy một Cell bên trái và cách cell hiện tại số <code>offset</code> cột.
+					</td></tr>			
+
+					<tr><td><b><code>
+					boolean
+					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
+					Cell.empty ( )
+					</b></code></a><br><br>
+					Kiểm tra một java Cell đó null hoặc trống.
+					</td></tr>			
+
 					
 				</table><br><br>
 				
