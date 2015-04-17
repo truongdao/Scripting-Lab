@@ -9,7 +9,7 @@ public class Constants {
 
 	
 	public static final String ABOUT_PROGRAM =
-			"Scripting Lab v1.1.1\n" +
+			"Scripting Lab v1.2.1\n" +
 			"Copyright (c) 2015 Truong Dao\n"+
 			"Source distribution: https://github.com/truongdao";
 			

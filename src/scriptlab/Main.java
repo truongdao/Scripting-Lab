@@ -27,6 +27,7 @@ public class Main {
 	public static JTextPane console;
 	public static JEditorPane codeEditor;
 	public static  JTextField txtLibPath;	
+	public static  String lookup_Path = "";	
 	
 	 /////////////////////// COMMON DATA //////////////////////////////////
 	static String executing_file = null;
@@ -37,15 +38,21 @@ public class Main {
 	 */
 	public static void main(String...arg){
 		/*
+		 * set up look up path ->
 		 * load engine -> run main.js/pointed jsx -> open GUI if needed -> load GUI with main.js or pointed jsx content 
 		 */
+		
+		//0. set up look up path
+		if(arg.length>1) {
+			if(new File(arg[1]).exists()) lookup_Path = arg[1];
+		}
 		
 		//1. load engine
 		EngineLoader.initEngine(engine);
 		
 		//2. invoke config.js
 		try {
-			engine.eval(new FileReader(new File(Constants.PATH_CONFIG_JS)));
+			builtins.eval(Constants.PATH_CONFIG_JS);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -57,10 +64,10 @@ public class Main {
 				
 				File f = new File(arg[0]);
 				executing_file = f.getAbsolutePath();
-				engine.eval(new FileReader(f));
+				builtins.eval(executing_file);
 				
 			}
-		//4. execute main.js in folder if it presents
+		//4. ELSE execute main.js in folder if it presents
 			else {
 				executing_file = new File(Constants.PATH_MAIN_JS).getAbsolutePath();
 				builtins.eval(executing_file);
