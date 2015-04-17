@@ -2,13 +2,14 @@ package scriptlab;
 
 public class Constants {
 
-	public static final String PATH_MAIN_JS = "./main.js";
+	public static final String PATH_CONFIG_JS = "ScriptingLab.data/config.js";
+	public static final String PATH_MAIN_JS = "ScriptingLab.data/main.js";
 	public static final  String PATH_BUILTINS_JS = "/scriptlab/builtin/builtins.js";
 	public static final String BUILTINS_NAME = "builtins";
 
 	
 	public static final String ABOUT_PROGRAM =
-			"Scripting Lab v1.1.1\n" +
+			"Scripting Lab v1.2.1\n" +
 			"Copyright (c) 2015 Truong Dao\n"+
 			"Source distribution: https://github.com/truongdao";
 			

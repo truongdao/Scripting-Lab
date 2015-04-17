@@ -61,7 +61,16 @@ Công cụ này tận dụng lợi thế dễ tiếp cận, mềm dẻo và sử
 <!---------------------------------------------------------------------------->
 <div id="div_installation">
 <h1>Installation</h1>
-
+Có 2 cách cài đặt chương trình chính: dạng portable, chạy file <code>.jar</code> ở thư mục bất kỳ hoặc
+thực thi file script có đuôi <code>.jsx</code> (khi đã cài đặt chương trình ở đâu đó từ trước).
+<ol type="1">
+	<h3><li>Run as portable program </li></h3>
+	
+	<h3><li>Execute files with association <code>.jsx</code></li></h3>
+	
+	<h3><li>Run from command line (less common)</li></h3>
+	
+	
 </div> <!--div "div_installation"-->
 
 
@@ -171,7 +180,9 @@ This tutorial is organised from low level to high level. Have fun :(!<br>
 					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
 					function eval( js_path )
 					</b></code></a><br><br>
-					Nạp và thực thi một tệp <code>.js</code> tại đường dẫn <code>js_path</code>, thường thì đó là một thư viện.
+					Nạp và thực thi một tệp <code>.js</code> tại đường dẫn <code>js_path</code>, thường thì đó là một thư viện.<br>
+					*<code>js_path</code> có thể là đường dẫn tuyệt đối, tương đối của thư mục hiện hành hay tương đối của thư mục looup (thư mục cài đặt).
+					
 					</td></tr>
 					
 					<tr><td><b><code>
@@ -179,7 +190,8 @@ This tutorial is organised from low level to high level. Have fun :(!<br>
 					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
 					function loadjar( jar_url )
 					</b></code></a><br><br>
-					Thêm một tệp thư viện <code>.jar</code> tại đường dẫn <code>jar_url</code> vào <code>JVM classpath</code>. Từ đây các gói trong thư viện thể được <code>import</code> trong môi trường javascript. Bước này được coi như là "nạp một thư viện gốc".
+					Thêm một tệp thư viện <code>.jar</code> tại đường dẫn <code>jar_url</code> vào <code>JVM classpath</code>. Từ đây các gói trong thư viện thể được <code>import</code> trong môi trường javascript. Bước này được coi như là "nạp một thư viện gốc".<br>
+					*<code>js_path</code>
 					</td></tr>
 					
 					<tr><td><b><code>

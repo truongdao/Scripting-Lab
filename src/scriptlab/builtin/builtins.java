@@ -3,6 +3,7 @@ package scriptlab.builtin;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileReader;
 import java.io.LineNumberReader;
 import java.lang.reflect.Method;
@@ -98,7 +99,10 @@ public class builtins{
 	
 	public static boolean eval(String js_path){
 		try {
+			
+			js_path = lookUpRealFilePath(js_path);
 			Main.engine.eval(new FileReader(js_path));
+			
 			return true;
 		} catch (Exception e) {
 			Console.print(e.getMessage(), Console.MSGTYPE_ERROR);
@@ -111,6 +115,7 @@ public class builtins{
 	
 	public static boolean loadjar(String jar_url){
 		
+		jar_url = lookUpRealFilePath(jar_url);
 		return EngineLoader.loadJar(jar_url);
 		
 	}
@@ -186,5 +191,26 @@ public class builtins{
 	}
 	////////////////// INTERNAL ROUTINEs //////////////////////////////////////
 	
-
+	/*
+	 * return real path of the file name. it may be absolute path,
+	 * cwd path or look up folder related path.
+	 */
+	private static String lookUpRealFilePath(String js_path){
+		String fp = "";
+		
+		//if the file in current path
+		File f = new File(js_path);
+		if(f.exists()){
+			fp = js_path;
+		}
+		
+		//look up for the file in installed folder
+		else{
+			f = new File(Main.lookup_Path, js_path);
+			if(f.exists()){
+				fp =f.getAbsolutePath();
+			}
+		}
+		return fp;
+	}
 }

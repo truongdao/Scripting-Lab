@@ -1,5 +1,5 @@
 importPackage(java.io);
-loadjar("./libs/poi-3.7-20101029.jar")
+loadjar("ScriptingLab.data/poi-3.7-20101029.jar")
 importClass(Packages.org.apache.poi.hssf.usermodel.HSSFWorkbook)
 
 var Xls = {
