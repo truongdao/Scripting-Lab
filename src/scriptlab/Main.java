@@ -16,6 +16,12 @@ import javax.swing.JTextPane;
 
 import scriptlab.builtin.builtins;
 
+/**
+ * Entrance of program, which initializes script engine, gui...
+ * and also contains reference to components.
+ * @author pika
+ *
+ */
 public class Main {
 
 	/////////////////////// COMMON DATA //////////////////////////////////

@@ -26,7 +26,7 @@ public class EngineLoader{
 	private static builtins obj_builtins = new builtins();
 	
 	/**
-	 * Initialize a JavaScript Engine.<p> 
+	 * Initialize a JavaScript Engine to be suitable for ScriptingLab.<p> 
 	 * @param jse - JavaScript Engine
 	 * @return - {@code true} if load OK, {@code false} if fail
 	 */

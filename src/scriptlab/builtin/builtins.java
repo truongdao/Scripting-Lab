@@ -97,6 +97,11 @@ public class builtins{
 		}
 	}
 	
+	/**
+	 * execute an javascript file based on its file path.
+	 * @param js_path
+	 * @return
+	 */
 	public static boolean eval(String js_path){
 		try {
 			
@@ -113,6 +118,11 @@ public class builtins{
 
 	//-----------------------------------------------------------------------//
 	
+	/**
+	 * Load an external jar library to program environment.
+	 * @param jar_url
+	 * @return
+	 */
 	public static boolean loadjar(String jar_url){
 		
 		jar_url = lookUpRealFilePath(jar_url);
@@ -122,6 +132,13 @@ public class builtins{
 	
 	//-----------------------------------------------------------------------//
 	
+	/**
+	 * Load a class from a jar library and simultaneously map it to a javascript var 
+	 * @param module_name - mapped name in js engine
+	 * @param jar_url - path to jar file
+	 * @param class_path - path to class in jar package
+	 * @return
+	 */
 	public static boolean loadclass(String module_name, String jar_url, String class_path) {
 		
 		return EngineLoader.loadClass(Main.engine, module_name, jar_url, class_path);
@@ -129,6 +146,10 @@ public class builtins{
 
 	//-----------------------------------------------------------------------//
 	
+	/**
+	 * print a message to console
+	 * @param msg
+	 */
 	public static void out(String msg) {
 
 		Console.print(msg, Console.MSGTYPE_INFO);	
@@ -136,6 +157,10 @@ public class builtins{
 	}
 	//-----------------------------------------------------------------------//
 	
+	/**
+	 * print a message to console in new line
+	 * @param msg
+	 */
 	public static void outln(String msg) {
 		
 		out(msg + "\n");
@@ -143,7 +168,9 @@ public class builtins{
 	}
 	//-----------------------------------------------------------------------//
 	
-	
+	/**
+	 * clear console
+	 */
 	public static void clear() {
 		
 		Console.clear();
@@ -155,7 +182,10 @@ public class builtins{
 	static String content = "";
 	static TextField txt;
 	
-	
+	/**
+	 * show dialog to get input string
+	 * @return typed string
+	 */
 	public static String input() {
 
 		diag = new Dialog(Main.frame);
@@ -183,7 +213,9 @@ public class builtins{
 	}
 	//-----------------------------------------------------------------------//
 	
-	
+	/**
+	 * exit program immediately
+	 */
 	public static void exit() {
 		
 		System.exit(0);

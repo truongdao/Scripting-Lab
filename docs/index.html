@@ -66,8 +66,31 @@ thực thi file script có đuôi <code>.jsx</code> (khi đã cài đặt chươ
 <ol type="1">
 	<h3><li>Run as portable program </li></h3>
 	
-	<h3><li>Execute files with association <code>.jsx</code></li></h3>
+	Đảm bảo rằng trong thư mục có cả tệp thực thi <code>ScriptingLab.jar</code> và thư mục <code>ScriptingLab.data</code>. Thư mục <code>ScriptingLab.data</code> để chứa các thư viện mở rộng và chương trình chính.<br>
+	Quá trình nạp các tệp khi khởi động:<br><br>
+	<center><img src="resources/startup_files.jpg" 
+		alt="ScriptingLab.jar ->config.js ->libs ->main.js"></center>
 	
+	<h3><li>Execute files with association <code>.jsx</code></li></h3>
+		<ol>
+		<li>	Chép 3 tệp <code>ScriptingLab.jar, run.bat, test.jsx </code> và thư mục <code>			ScriptingLab.data</code> vào một thư mục bất kỳ.<br><br>
+		<center><img src="resources/installation_files.jpg" 
+			alt="ScriptingLab.jar, run.bat, ScriptingLab.data"></center>
+		</li>
+		<li> Sửa nội dung tệp <code>run.bat</code>. Thay đường dẫn tới thư mục chứa những tệp cài đặt này vào vị trí được tô đậm. Ở đây thư mục cài đặt của tôi là <code>D:\my\Proj_TaskWizard\TestPlace</code> nên nội dung tệp <code>run.bat</code> như sau:<br><br>
+		<center><img src="resources/edit_run_bat.jpg" 
+			alt="run.bat content"></center>
+		</li>
+		<li> Đăng ký các tệp có đuôi <code>.jsx</code> mở bằng chương trình. 
+		Nhấp phải chuột vào tệp <code>test.jsx</code> chọn <b>Open with...</b>,
+		Nhấp <b>Browse...</b> trong hộp thoại Open with, trỏ tới tệp <code>run.bat</code> này trong hộp thoại chọn tệp, OK.<br><br>
+		
+		<center><img src="resources/setup_open_with.jpg" 
+			alt="run.bat file"></center>
+		</li><br>	
+		Cài đặt đã hoàn tất. Giờ các tệp có đuôi <code>.jsx</code> ở vị trí bất kỳ sẽ luôn được mở bằng chương trình. Tệp <code>.jsx</code> là một tệp <code>javascript</code>. Giờ hãy kiểm tra bằng cách nháy đôi vào tệp <code>test.jsx</code>
+		</ol>
+		
 	<h3><li>Run from command line (less common)</li></h3>
 	
 	
@@ -78,15 +101,16 @@ thực thi file script có đuôi <code>.jsx</code> (khi đã cài đặt chươ
 <div id="div_tutorials">
 <h1>Tutorials</h1>
 
-This tutorial is organised from low level to high level. Have fun :(!<br>
+Hướng dẫn này được tổ chức theo trình độ từ đơn giản đến nâng cao. Chúc vui! :(<br>
 
 		<ol type="1">
 			<!---------------------------------------------------------------------------->
 			<h3><li>Say 'helloworld'</li></h3>
 			
-			Đầu tiên hãy đảm bảo rằng chương trình đã được cài đặt đúng yêu cầu. Trong thử nghiệm này hãy đảm bảo rằng trong thư mục có cả tệp <code>ScriptLab.jar</code> và <code>main.js</code>, và nội dung của tệp <code>main.js</code> là trống.<br><br>
+			Đầu tiên hãy đảm bảo rằng chương trình đã được cài đặt đúng yêu cầu. 
+			Có thể kích hoạt chương trình bằng cách chạy <code>ScriptingLab.jar</code> (dạng portable) hoặc mở một tệp <code>.jsx</code> trống.
 			
-			<center><img src="resources/tut1_folder.JPG" alt="Right installation"></center> <br>
+			<br>
 			<hr>
 			Chương trình helloworld đầu tiên: <br><br>
 			1. Double click "ScriptingLab.jar"<br>
@@ -113,6 +137,10 @@ This tutorial is organised from low level to high level. Have fun :(!<br>
 			
 			<!---------------------------------------------------------------------------->
 			<h3><li>Using Libraries</li></h3>
+			Có hai loại thư viện: thư viện <code>Java .jar</code> và thư viện <code>javascript .js</code>. Để nạp một thư viện jar, sử dụng hàm <code>loadjar( jar_path )</code>. Để nạp thư viện js, sử dụng <code>eval( js_path )</code>. <br>
+			Đường dẫn tới các thư viện có thể là tuyệt đối, tương đối theo vị trí chương trình được cài đặt (lookup) hay tương đối theo vị trí chương trình được kích hoạt (bởi chạy tệp <code>.jsx</code>). <br>
+			Để nạp các thư viện khi chương trình khởi động, cần đăng ký trong tệp <code>config.js</code>. Bước đăng ký chỉ đơn giản là gọi hàm <code>eval() hay loadjar()</code>.<br><br>
+			*Cần lưu ý về thư mục làm việc: thư mục chứa tệp <code>.jsx</code> mà kích hoạt chương trình là thư mục chính, thư mục cài đặt có tệp <code>ScriptingLab.jar</code> là thư mục lookup( nếu không tìm thấy thư viện trong thư mục chính, chương trình sẽ tìm trong thư mục lookup). Tính năng lookup folder chỉ hỗ trợ cho phương thức <code>eval() và loadjar()</code>, không hỗ trợ cho các kiểu đọc file thông thường khác.<br>
 			
 			<!---------------------------------------------------------------------------->
 			<h3><li>Use cases</li></h3>
@@ -264,7 +292,8 @@ This tutorial is organised from low level to high level. Have fun :(!<br>
 				<code><font color="BLUE">
 				<b>cmd.js</b></font></code> <br><br>
 				
-				Thư viện cung cấp hàm để thực thi các lệnh <code>command line</code> của Windows. 
+				Thư viện cung cấp hàm để thực thi các lệnh <code>command line</code> của Windows. <br>
+				* Có nhiều hàm bị Windows hạn chế không cho gọi từ chương trình.
 				<br><br>
 
 				<!-- functions description-->
@@ -292,7 +321,7 @@ This tutorial is organised from low level to high level. Have fun :(!<br>
 				<li>
 					<div id="cmd_cmd">
 					<code><b>function cmd( cmd_line ) : string </b></code><br><br>
-					Các lệnh này được hỗ trợ bởi Command.exe. Ví dụ : <code>cmd('help'), cmd('tree'),...</code>
+					Các lệnh này được hỗ trợ bởi Command.exe. Ví dụ : <code>cmd('help')...</code>
 					</div>
 				</li>
 				
@@ -691,14 +720,55 @@ if(form1.ret == null)
 <!---------------------------------------------------------------------------->
 <div id="div_technical">
 <h1>Technical description</h1>
-
+	<ol>
+	<h3><li>System</li></h3>
+		<ol>
+		<h3><li>Model</li></h3>
+		
+		<center><img src="resources/plugin_structure.jpg" alt="plugin_struct"></center>
+		<hr>
+		Về cơ bản Scripting Lab là bộ công cụ kết nối javascript engine (Rhino) ra môi trường ngoài như một ứng dụng desktop. Hệ thống phân cấp thành 3 tầng:
+		<ul>
+		<li><b>Script Lab</b> là chương trình chính viết bằng Java, nó thì chứa một js engine bên trong và hệ thống giao diện cũng như các hàm xây dựng sẵn, nhiều hàm cho phép chương trình js tương tác với chính js engine (điều này có thể gây nhiều mối nguy hiểm) giúp nó có thể mở rộng chức năng một cách dễ dàng.</li>
+		<li><b>lib</b> Các thư viện mở rộng có thể là tệp js hay jar hoặc kết hợp. Chúng được nạp vào hệ thống một cách hoàn toàn linh động bởi các lệnh xuất phát từ chương trình java script.</li>
+		<li><b>app</b> là tầng ứng dụng. Chương trình chính thường chỉ thể hiện như là các thao tác liên quan đến nghiệp vụ. Các thao tác này thì phải được cung cấp bởi các thư viện trong lớp <b>lib</b>. Điều này đảm bảo sự rành mạch và rõ ràng của chương trình</li>
+		</ol>
+		
+		<h3><li>Program components</li></h3>
+		<hr>
+		<center><img src="resources/tech_components.jpg" alt="components"></center>
+		<hr>
+		<ul>
+			<li>Bắt đầu từ <code>Main.java</code> nó thì chứa tham chiếu của hầu hết các thành phần trong chương trình. Hàm <code>main()</code> nhiệm vụ chính là khởi tạo engine, GUI.</li>
+			<li><code>EngineLoader.java</code> khởi tạo engine và load thư viện built-in cũng như cung cấp dịch vụ cơ bản <code>loadJar</code>.</li>
+			<li><code>ScriptingLabGUI.java</code> chứa đựng đối tượng <code>console output, code editor</code> có thể chứa nội dung html. Tương lai có thể mở rộng chức năng tô màu keywords.</li>
+			<li><code>Console.java</code> chứa đựng giao diện chuẩn cho giao diện console của chương trình. Nếu đối tượng <code>ScriptLabGUI</code> bị vô hiệu chúng sẽ cho xuất dữ liệu sang console của Windows.</li>
+			<li><code>builtins.java</code> giao diện kết nối giữa thư viện <code>builtins.js</code> với chương trình. Về cơ bản nó chỉ gọi các functions của những components khác và expose chúng cho script engine. Tên hàm trong <code>builtins.java</code> giống trong <code>builtins.js</code> như một quy ước.</li>
+			<li><code>Constant.java</code> chứa các tham số hệ thống.</li>
+			
+		</ul>
+	<h3><li>Building libraries</li></h3>
+		<ol>
+		<h3><li>Model</li></h3>
+		
+		<center><img src="resources/load_extlib.jpg" alt="plugin_struct"></center>
+		<center>(Nạp một thư viện)</center>
+		
+		<h3><li>Guidelines</li></h3>
+		
+		</ol>
+	<h3><li>Extending built-in functions</li></h3>
+	</ol>
 </div> <!--div "div_technical"-->
 
 
 <!---------------------------------------------------------------------------->
 <div id="div_contribution">
 <h1>Contribution</h1>
-
+Người sử dụng có thể tùy ý tải, sử dụng, sửa đổi mã nguồn, phân phối cho mục tiêu cá nhân mà không cần xin phép tác giả.<br>
+Website:	<br>
+Source: 	<a href="https://github.com/truongdao/Scripting-Lab">https://github.com/truongdao/Scripting-Lab</a><br>
+Contact: <a href="mailto:doctdao@gmail.com">doctdao@gmail.com</a>
 <p>
 <center>Copyright(c) 2015 Truong Dao</center>
 </p>
