@@ -1,3 +1,4 @@
+disableGUI(true)
 clear()
 
 var form1 = new Form([

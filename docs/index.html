@@ -101,7 +101,7 @@ thực thi file script có đuôi <code>.jsx</code> (khi đã cài đặt chươ
 <div id="div_tutorials">
 <h1>Tutorials</h1>
 
-Hướng dẫn này được tổ chức theo trình độ từ đơn giản đến nâng cao. Chúc vui! :(<br>
+Hướng dẫn này được tổ chức theo mức độ thú vị dần. Chúc vui! :(<br>
 
 		<ol type="1">
 			<!---------------------------------------------------------------------------->
@@ -122,17 +122,38 @@ Hướng dẫn này được tổ chức theo trình độ từ đơn giản đ�
 			Chương trình helloworld đầu tiên đơn giản là in ra console một dòng chữ.<br>
 			<!---------------------------------------------------------------------------->
 			<h3><li>GUI Interface</li></h3>			
-			Giải thích một chút chức năng của giao diện:<br><br>
+			Giải thích vài chức năng của giao diện:<br><br>
 			<ul>
-				<li>Nút <b>Run</b>: 				</li>
-				<li>Nút <b>Save</b>: 				</li>
-				<li>Nút <b>Browser</b>: 				</li>
-				<li>Nút <b>?</b>: 				</li>
-				<li>Nút <b>Clear</b>: 				</li>
-				<li><b>Thanh địa chỉ</b>: 				</li>
-				<li><b>Code editor</b>: 				</li>
-				<li><b>Output console</b>: 				</li>
-				<li><b>Phím tắt</b>:					</li>
+				<li>Nút <b>Run</b>: Thực hiện đoạn chương trình có trên cửa <code>Code editor</code> (không phải thực thi tệp <code>.js</code> trên thanh địa chỉ.				</li>
+				<li>Nút <b>Save</b>: Lưu nội dung của <code>Code editor</code> vào tệp trên thanh địa chỉ.				</li>
+				<li><b>Thanh địa chỉ</b>: Nếu nhập địa chỉ bằng tay, nhấn <code>Enter</code> để nạp nội dung tệp được trỏ tới lên khung soạn thảo.</li>
+				<li>Nút <b>Browser</b>: Mở hộp thoại chọn tệp.				</li>
+				<li>Nút <b>?</b>: Thông tin chương trình.				</li>
+				<li>Nút <b>Clear</b>: Xóa nội dung khung <code>Output console </code>, có thể gọi lệnh clear() để làm điều đó.</li>
+				<li><b>Code editor</b>: Khung soạn thảo code. </li>
+				
+				<li><b>Output console</b>: Khung xuất dữ liệu khi gọi hàm outln(),out(), đầu ra chuẩn của <code>Scripting Lab</code>. Đây cũng nên là ngõ ra của các lỗi mà người sử dụng cuối cần biết, một số lỗi cấp thấp không được bắt (catch) sẽ xuất hiện trong <code>console</code> của hệ điều hành. Lưu ý: Scripting Lab không chủ ý thay các output stream mặc định của <code>java.lang.System</code></li>
+				
+				<li><b>Phím tắt</b> (cho <code>Code editor</code>):<br><br>
+				<table border=1 style="width:100%">
+				<tr>
+				<td><code>Alt+Enter</code></td>
+				<td>thực thi toàn bộ code trên khung soạn thảo.</td>
+				</tr>
+				
+				<tr>
+				<td><code>Bôi đen code, Alt+Enter</code></td>
+				<td>thực thi đoạn code được bôi đen.</td>
+				</tr>	
+				
+				<tr>
+				<td><code>Shift+Enter</code></td>
+				<td>thực thi dòng code đang biên tập (có dấu nhắc chuột). Đặc biệt hữu ích khi thử nghiệm một dòng code, bạn có thể gọi <code>clear()</code> ở bất cứ đâu.</td>
+				</tr>	
+				
+				</table>
+				
+				</p></li>
 			</ul>
 			
 			<!---------------------------------------------------------------------------->
@@ -236,7 +257,7 @@ Hướng dẫn này được tổ chức theo trình độ từ đơn giản đ�
 					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
 					function out( msg )
 					</b></code></a><br><br>
-					In một chuổi <code>msg</code> ra màn hình console (của ScriptLab hay JVM, tùy cấu hình).
+					In một chuổi <code>msg</code> ra màn hình console (của Scripting Lab hay JVM, tùy cấu hình).
 					</td></tr>
 
 					<tr><td><b><code>
@@ -244,7 +265,7 @@ Hướng dẫn này được tổ chức theo trình độ từ đơn giản đ�
 					</code></b></td> <td><a href="#builtins_convert" style="text-decoration:none;"><code><b>
 					function outln( msg )
 					</b></code></a><br><br>
-					In ra một chuổi <code>msg</code> trên dòng mới của màn hình console (của Script Lab hay JVM, tùy cấu hình).
+					In ra một chuổi <code>msg</code> trên dòng mới của màn hình console (của Scripting Lab hay JVM, tùy cấu hình).
 					</td></tr>
 
 					<tr><td><b><code>
@@ -729,7 +750,7 @@ if(form1.ret == null)
 		<hr>
 		Về cơ bản Scripting Lab là bộ công cụ kết nối javascript engine (Rhino) ra môi trường ngoài như một ứng dụng desktop. Hệ thống phân cấp thành 3 tầng:
 		<ul>
-		<li><b>Script Lab</b> là chương trình chính viết bằng Java, nó thì chứa một js engine bên trong và hệ thống giao diện cũng như các hàm xây dựng sẵn, nhiều hàm cho phép chương trình js tương tác với chính js engine (điều này có thể gây nhiều mối nguy hiểm) giúp nó có thể mở rộng chức năng một cách dễ dàng.</li>
+		<li><b>Scripting Lab</b> là chương trình chính viết bằng Java, nó thì chứa một js engine bên trong và hệ thống giao diện cũng như các hàm xây dựng sẵn, nhiều hàm cho phép chương trình js tương tác với chính js engine (điều này có thể gây nhiều mối nguy hiểm) giúp nó có thể mở rộng chức năng một cách dễ dàng.</li>
 		<li><b>lib</b> Các thư viện mở rộng có thể là tệp js hay jar hoặc kết hợp. Chúng được nạp vào hệ thống một cách hoàn toàn linh động bởi các lệnh xuất phát từ chương trình java script.</li>
 		<li><b>app</b> là tầng ứng dụng. Chương trình chính thường chỉ thể hiện như là các thao tác liên quan đến nghiệp vụ. Các thao tác này thì phải được cung cấp bởi các thư viện trong lớp <b>lib</b>. Điều này đảm bảo sự rành mạch và rõ ràng của chương trình</li>
 		</ol>
@@ -742,7 +763,7 @@ if(form1.ret == null)
 			<li>Bắt đầu từ <code>Main.java</code> nó thì chứa tham chiếu của hầu hết các thành phần trong chương trình. Hàm <code>main()</code> nhiệm vụ chính là khởi tạo engine, GUI.</li>
 			<li><code>EngineLoader.java</code> khởi tạo engine và load thư viện built-in cũng như cung cấp dịch vụ cơ bản <code>loadJar</code>.</li>
 			<li><code>ScriptingLabGUI.java</code> chứa đựng đối tượng <code>console output, code editor</code> có thể chứa nội dung html. Tương lai có thể mở rộng chức năng tô màu keywords.</li>
-			<li><code>Console.java</code> chứa đựng giao diện chuẩn cho giao diện console của chương trình. Nếu đối tượng <code>ScriptLabGUI</code> bị vô hiệu chúng sẽ cho xuất dữ liệu sang console của Windows.</li>
+			<li><code>Console.java</code> chứa đựng giao diện chuẩn cho giao diện console của chương trình. Nếu đối tượng <code>ScriptingLabGUI</code> bị vô hiệu chúng sẽ cho xuất dữ liệu sang console của Windows.</li>
 			<li><code>builtins.java</code> giao diện kết nối giữa thư viện <code>builtins.js</code> với chương trình. Về cơ bản nó chỉ gọi các functions của những components khác và expose chúng cho script engine. Tên hàm trong <code>builtins.java</code> giống trong <code>builtins.js</code> như một quy ước.</li>
 			<li><code>Constant.java</code> chứa các tham số hệ thống.</li>
 			
@@ -751,7 +772,7 @@ if(form1.ret == null)
 		<ol>
 		<h3><li>Model</li></h3>
 		
-		<center><img src="resources/load_extlib.jpg" alt="plugin_struct"></center>
+		<center><img src="resources/load_extlib.jpg" alt="load_extlib"></center>
 		<center>(Nạp một thư viện)</center>
 		
 		<h3><li>Guidelines</li></h3>
@@ -766,10 +787,11 @@ if(form1.ret == null)
 <div id="div_contribution">
 <h1>Contribution</h1>
 Người sử dụng có thể tùy ý tải, sử dụng, sửa đổi mã nguồn, phân phối cho mục tiêu cá nhân mà không cần xin phép tác giả.<br>
-Website:	<br>
+Website:	<a href="https://sites.google.com/site/scriptinglab">https://sites.google.com/site/scriptinglab</a><br><br>
+
 Source: 	<a href="https://github.com/truongdao/Scripting-Lab">https://github.com/truongdao/Scripting-Lab</a><br>
 Contact: <a href="mailto:doctdao@gmail.com">doctdao@gmail.com</a>
-<p>
+<p><br><br><br><br>
 <center>Copyright(c) 2015 Truong Dao</center>
 </p>
 </div> <!--div "div_contribution"-->
