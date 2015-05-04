@@ -2,7 +2,7 @@ var dir = {
 	newf: 	null,		//new file
 	newd:   null,		//new directory
 	copyf:	null,		//copy a file
-	
+	movef:	null,		//move a file
 	//mode set
 	path_mode: "full",	// "full" canonical path OR "relative" path OR "just_name"
 						// used for ls and find
@@ -68,10 +68,53 @@ dir.newd = function( path ){
  */
 dir.copyf = function (src, dest){
 
-	java.nio.file.Files.copy(
-		new java.io.File(src).toPath(),
-		new java.io.File(dest).toPath()
-	);
+	try{
+		var dt = new java.io.File(dest);
+		var sr = new java.io.File(src);
+		var fdest  = null;
+		//dest is folder name
+		if(dt.exists() && dt.isDirectory()) {
+			fdest = new java.io.File(dest, sr.getName());
+		}
+		// dest is file name, do changing file name
+		else{
+			fdest = dt;		
+		}
+		
+		outln(fdest.getCanonicalPath());
+		java.nio.file.Files.copy(
+				sr.toPath(),
+				fdest.toPath()
+		);
+	} catch(err){}
+
+};
+
+/**
+ * move one file from {@code src} to {@code dest}, do replacement if existed
+ */
+dir.movef = function (src, dest){
+
+	try{
+		var dt = new java.io.File(dest);
+		var sr = new java.io.File(src);
+		var fdest  = null;
+		//dest is folder name
+		if(dt.exists() && dt.isDirectory()) {
+			fdest = new java.io.File(dest, sr.getName());
+		}
+		// dest is file name, do changing file name
+		else{
+			fdest = dt;		
+		}
+		
+		outln(fdest.getCanonicalPath());
+		java.nio.file.Files.move(
+				sr.toPath(),
+				fdest.toPath(),
+				java.nio.file.StandardCopyOption.REPLACE_EXISTING
+		);
+	} catch(err){}
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -166,9 +209,33 @@ dir.find = function(path, patt, mode){
 	if(path == null) path = ".";
 	
 	var lsn = [];
-	var root = new File(path);
+	var	stack = [];
 
+
+	// non-recursion
 	var lsFolder = function(fld){
+		stack.push(fld);
+		while(stack.length > 0){
+			var child = stack.pop();
+			var childf = new File(child);
+			
+			var	st = (dir.path_mode == "full")? childf.getCanonicalPath() : 
+					(dir.path_mode == "relative")? childf.getPath() : 
+					childf.getName(); //"just_name"
+					
+			if(childf.isDirectory()) {
+				var ret = dir.check_pattern(st, patt);
+				if((ret!=null) &&(mode=='all' || mode=='directory')) lsn.push(ret);
+				
+				var f = childf.listFiles();
+				for(var i in f) stack.push(f[i].getPath());
+			} else if(childf.isFile()){
+				var ret = dir.check_pattern(st, patt);
+				if((ret!=null) &&(mode=='all' || mode=='file')) lsn.push(ret);
+			}
+		}
+		
+	/*	//recursion method
 		var lsf = fld.listFiles();
 		for(var i in lsf){
 			var	st = (dir.path_mode == "full")? lsf[i].getCanonicalPath() : 
@@ -188,8 +255,10 @@ dir.find = function(path, patt, mode){
 				}
 			}
 		}
+	*/
 	};
-	lsFolder(root);
+	
+	lsFolder(path);
 	
 	if(!dir.silent) for(var i in lsn) outln(lsn[i]);
 	

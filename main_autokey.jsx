@@ -1,4 +1,4 @@
-eval('D:/my/Proj_TaskWizard/ScriptingLab/autokey.js');
+eval('D:/my/Proj_TaskWizard/ScriptingLab/ScriptingLab.data/autokey.js');
 autokey.pkx(
 	KeyEvent.VK_WINDOWS, 500,
 	'CMD', 500,
@@ -17,3 +17,4 @@ autokey.pkx(
 * 	r.delay(500);
 * }
 *************************************************/
+
