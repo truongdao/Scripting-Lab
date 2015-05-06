@@ -3,6 +3,10 @@ var dir = {
 	newd:   null,		//new directory
 	copyf:	null,		//copy a file
 	movef:	null,		//move a file
+	
+	writef: null,		// open a text file to write, return java.io.PrintWriter object 
+	readf: null,		// open a text file to read, return java.io.LineNumberReader object
+	
 	//mode set
 	path_mode: "full",	// "full" canonical path OR "relative" path OR "just_name"
 						// used for ls and find
@@ -117,6 +121,25 @@ dir.movef = function (src, dest){
 	} catch(err){}
 };
 
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * open a text file to write
+ */
+dir.writef = function(path){
+	return java.io.PrintWriter(path);
+};
+
+/**
+ * open a text file to read
+ */
+dir.readf = function(path){
+	return java.io.LineNumberReader(
+		new java.io.InputStreamReader(
+			new java.io.FileInputStream(path)
+		)
+	);
+};
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
