@@ -1,2 +1,2 @@
 @echo run bat
-java -jar D:\my\Proj_TaskWizard\ScriptingLab\ScriptingLab.jar %1 D:\my\Proj_TaskWizard\ScriptingLab
+java -jar D:\MyLabs\ScriptingLab\Scripting-Lab\ScriptingLab.jar %1 D:\MyLabs\ScriptingLab\Scripting-Lab
