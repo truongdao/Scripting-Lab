@@ -184,15 +184,17 @@ public class builtins{
 	
 	/**
 	 * show dialog to get input string
+	 * @param title - title for dialog 
+	 * @param ivalue - initial value
 	 * @return typed string
 	 */
-	public static String input() {
+	public static String input(String title, String ivalue) {
 
 		diag = new Dialog(Main.frame);
 		diag.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-		diag.setTitle("Get string");
+		diag.setTitle(title);
 		diag.setLayout(new FlowLayout(FlowLayout.CENTER));
-		txt = new TextField("", 25);
+		txt = new TextField(ivalue, 25);
 		txt.addActionListener(new ActionListener() {
 			
 			

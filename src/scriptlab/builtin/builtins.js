@@ -89,12 +89,26 @@
 		builtins.clear();
 	}
 	
+	var __previous_input_ivalue = '';
 	/**
-	 * show query box to get string data
-	 * @return string typed
+	 * show dialog to get input string. Previous value feature added.
+	 * @param title - title for dialog 
+	 * @param ivalue - initial value
+	 * @return typed string
 	 */
-	function input(){
-		return builtins.input();
+	function input(title, ivalue){
+		var t_title = 'Get string';
+		
+		if(arguments.length == 2){
+			t_title = title;
+			__previous_input_ivalue = ivalue;
+		}
+		if(arguments.length == 1){
+			t_title = title;
+		}
+		
+		__previous_input_ivalue  = builtins.input(t_title, __previous_input_ivalue) + ''; //convert to js string
+		return __previous_input_ivalue;
 	}	
 	
 	/**
