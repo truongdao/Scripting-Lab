@@ -1,6 +1,9 @@
 importPackage(java.io);
-loadjar("ScriptingLab.data/poi-3.7-20101029.jar")
-importClass(Packages.org.apache.poi.hssf.usermodel.HSSFWorkbook)
+loadjar("ScriptingLab.data/poi-3.12-20150511.jar");
+loadjar("ScriptingLab.data/poi-ooxml-3.12-20150511.jar");
+loadjar("ScriptingLab.data/poi-ooxml-schemas-3.12-20150511.jar");
+loadjar("ScriptingLab.data/xmlbeans-2.6.0.jar");
+importClass(Packages.org.apache.poi.ss.usermodel.WorkbookFactory)
 
 var Xls = {
 	path: ".",
@@ -27,7 +30,15 @@ var Sheet = {
 	left:	null,
 	right:	null,
 	cell: null,			//get a cell
-	cells: null			//get all cells to an array
+	cells: null,			//get all cells to an array
+	
+	//value: name of sheet
+	get value(){		//default value property
+		return this.r.getSheetName()+'';
+	},
+	set value(new_name){
+		this.book.r.setSheetName(this.book.r.getSheetIndex(this.r), new_name);
+	}
 };
 
 
@@ -39,7 +50,16 @@ var Cell = {
 	down:	null,
 	left:	null,
 	right:	null,
-	empty:	null
+	empty:	null,
+	
+	//value: content as string
+	get value(){		//default value property
+		return this.r.toString()+'';
+	},
+	set value(new_value){
+		this.r.setCellType(Packages.org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING);
+		this.r.setCellValue(new_value);
+	}
 	
 };
 ////////////////////////// IMPLEMENTATIONS ////////////////////////////////////
@@ -50,7 +70,7 @@ Xls.open = function(file_path){
 	new_book.parent = this;
 	
 	var fis = new FileInputStream(file_path);
-	new_book.r = new HSSFWorkbook(fis);
+	new_book.r = WorkbookFactory.create(fis);
 	fis.close();
 	return new_book;
 };
