@@ -56,14 +56,12 @@
 	}
 		
 	/**
-	 * Load new module to JavaScript engine, a module in JS is respective to a class in Java.<p>
-	 * @param module_name - object name in JS engine
-	 * @param jar_url - path to jar file
-	 * @param class_path - path to class inside jar file
-	 * @return - {@code true} if load OK, {@code false} if fail
+	 * Load new java object based on its class, object must have constructor without parameters.<p>
+	 * @param path_class - path to class inside jar file
+	 * @return - loaded object
 	 */
-	function loadclass(module_name, jar_url, class_path){
-		return builtins.loadclass(module_name, jar_url, class_path);
+	function loadclass(path_class){
+		return builtins.loadclass(path_class);
 	}
 	
 	/**

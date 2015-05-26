@@ -51,44 +51,29 @@ public class EngineLoader{
 		}
 	}
 	
-	
+
 	/**
-	 * Load new module to JavaScript engine, a module in JS is respective to a class in Java.<p>
-	 * This function, originally should be used by script file.<p><p>
-	 * 
-	 * Example: {@code load(jse, "foo", "d:\LibFoo.jar", "org.foo.Foo");}
-	 * 
-	 * @param jse - JS engine loaded to
-	 * @param module_name - object name in JS engine
-	 * @param jar_url - path to jar file
+	  * Load new java object based on its class.
+	  * object must have constructor without parameters and unpackaged.<p>
 	 * @param class_path - path to class inside jar file
-	 * @return - {@code true} if load OK, {@code false} if fail
+	 * @return - loaded object
 	 */
-	public static boolean loadClass(ScriptEngine jse, String module_name, String jar_url, String class_path){
-		/*
-		 * Load jar -> load class -> put to engine
-		 */
+	public static Object loadClass(String  class_path){
+
 		try {
 			
-			//1. Load jar file
-			ClassLoader cl;
-			File file = new File(jar_url);
-			URL url = file.toURI().toURL();
-			URL[] urls = new URL[]{url};
-			cl = new URLClassLoader(urls);
-			
-			//2. Load class as object
 			Object obj;
-			Class cls = cl.loadClass(class_path);
-			obj = cls.newInstance();
+			File f = new File(class_path);
+			String clzz = f.getName().replaceFirst("[.][^.]+$", "");;
 
-			//3. Put the class to engine and name it
-			jse.put(module_name, obj);
+			URL urls[] = new URL[]{f.getParentFile().toURI().toURL()};
+			obj = new URLClassLoader(urls).loadClass(clzz).newInstance();
 			
-			return true;
+			return obj;
 		} catch (Exception e1) {
+			e1.printStackTrace();
 			 Console.print("\n"+e1.getMessage(), Console.MSGTYPE_ERROR);
-			 return false;
+			 return null;
 		}
 	
 	}

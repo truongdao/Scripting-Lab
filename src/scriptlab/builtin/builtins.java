@@ -133,15 +133,13 @@ public class builtins{
 	//-----------------------------------------------------------------------//
 	
 	/**
-	 * Load a class from a jar library and simultaneously map it to a javascript var 
-	 * @param module_name - mapped name in js engine
-	 * @param jar_url - path to jar file
-	 * @param class_path - path to class in jar package
-	 * @return
+	 * Load new java object based on its class, object must have constructor without parameters.<p>
+	 * @param path_class - path to class inside jar file
+	 * @return - loaded object
 	 */
-	public static boolean loadclass(String module_name, String jar_url, String class_path) {
+	public static Object loadclass(String  class_path) {
 		
-		return EngineLoader.loadClass(Main.engine, module_name, jar_url, class_path);
+		return EngineLoader.loadClass(class_path);
 	}
 
 	//-----------------------------------------------------------------------//
