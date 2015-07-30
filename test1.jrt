@@ -1,0 +1,5 @@
+  <p>Counting to three:</p>
+  	<% for (var i=1; i<=input.lines; i++) { %>
+  	 <p>This number is <%= i %>.</p>
+  	<% } %>
+  	<p><%=input.name%></p>
