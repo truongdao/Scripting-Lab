@@ -116,6 +116,8 @@ public class Main {
 			});
 		}
 		
+		//6. add engine to script space
+		engine.put("engine", engine);
 		
 	}
 }
