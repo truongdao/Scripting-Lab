@@ -2,10 +2,18 @@ package scriptlab;
 
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -14,7 +22,11 @@ import javax.swing.JEditorPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
-import scriptlab.builtin.builtins;
+import scriptlab.CodeTracker.Record;
+import scriptlab.builtin.Builtins;
+import scriptlab.plugin.SpiderIde;
+import scriptlab.utils.UnicodeFileReader;
+import scriptlab.utils.UnixCmdProcessor;
 
 /**
  * Entrance of program, which initializes script engine, gui...
@@ -26,98 +38,205 @@ public class Main {
 
 	/////////////////////// COMMON DATA //////////////////////////////////
 	
-	public static ScriptEngine engine = 
-					new ScriptEngineManager().getEngineByName("JavaScript");
-	public static Frame frame;
-	public static boolean frame_disabled = false;
-	public static JTextPane console;
-	public static JEditorPane codeEditor;
-	public static  JTextField txtLibPath;	
+
 	public static  String lookup_Path = "";	
 	
 	 /////////////////////// COMMON DATA //////////////////////////////////
 	static String executing_file = null;
+	public static Spider spider = new Spider();
 	
 	/**
 	 * Launch the application.<p>
-	 * @param arg
+	 * @param commands
 	 */
-	public static void main(String...arg){
-		/*
-		 * set up look up path ->
-		 * load engine -> run main.js/pointed jsx -> open GUI if needed -> load GUI with main.js or pointed jsx content 
-		 */
+	public static void main(String...args){
 		
-		//0. set up look up path
-		if(arg.length>1) {
-			if(new File(arg[1]).exists()) lookup_Path = arg[1];
+		coreInit(args);
+		featureLoad();
+		if(spider.config.enable_ide){
+			loadIDE(spider);
+		} else{
+			executeScript();
 		}
-		
-		//1. load engine
-		EngineLoader.initEngine(engine);
-		
-		//2. invoke config.js
-		try {
-			builtins.eval(Constants.PATH_CONFIG_JS);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		
-		
-		//3. try to exec input file if it presents
-		try {
-			if(arg.length>0) {
-				
-				File f = new File(arg[0]);
-				executing_file = f.getAbsolutePath();
-				builtins.eval(executing_file);
-				
-			}
-		//4. ELSE execute main.js in folder if it presents
-			else {
-				executing_file = new File(Constants.PATH_MAIN_JS).getAbsolutePath();
-				builtins.eval(executing_file);
-			}
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		
-		
-		
-		//5. check if showing GUI is enabled - done in main.js
-		if(!frame_disabled){
-			Main.frame = new ScriptLabGUI();
-
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					try {
-						
-						//1. show frame
-						Main.frame.setVisible(true);
-						
-						//2. load address of main.js to address bar
-						txtLibPath.setText(executing_file);
-						
-						//3. load content from main.js
-						String whole ="";
-						LineNumberReader nreader = new LineNumberReader(new FileReader(executing_file));
-
-						String line;
-						while((line=nreader.readLine())!=null){
-							whole += line+"\n";
-						}
-						Main.codeEditor.setText(whole +"\n");
-			
-						nreader.close();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});
-		}
-		
-		//6. add engine to script space
-		engine.put("engine", engine);
 		
 	}
+
+
+
+	/*****************************************************************************/
+	/*    L E V E L   1                                                          */
+	/*****************************************************************************/
+
+
+	private static void coreInit(String[] args) {
+		
+		//1. parse Cmd string
+		UnixCmdProcessor ucmd =  UnixCmdProcessor.parseGroup(args);
+		
+		//2.0 default configs
+		spider.config.enable_ide = false;
+
+		//2. map command arguments to spider.config.* 
+		handleInvocationCommand(ucmd);
+		
+		//3. repeat setting flag enable_ide from other config sources
+		if(!ucmd.arguments.containsKey("ide")){
+			
+			//3a. LOW PRIORITY: handle direction in first line of the config.js file.
+			{
+				String realPath = Builtins.lookUpRealFilePath(
+						spider.constant.PATH_CONFIG_JS, 
+						spider.config.lookupPaths);
+				String firstLine = UnicodeFileReader.readFirstLine(realPath);
+
+				if(firstLine!=null){
+					if(firstLine.startsWith(spider.constant.ENABLE_GUI_INLINE_DIRECTION))
+						spider.config.enable_ide = true;
+					else if(firstLine.startsWith(spider.constant.DISABLE_GUI_INLINE_DIRECTION))
+						spider.config.enable_ide = false;
+				}
+			}
+			
+			//3b. HIGH PRIORITY: handle direction in first line of the jsx file.
+			if(ucmd.objects.size()>0){
+				String jsxFile = ucmd.objects.get(0);
+				String realPath = Builtins.lookUpRealFilePath(
+						jsxFile, 
+						spider.config.lookupPaths);
+				String firstLine = UnicodeFileReader.readFirstLine(realPath);
+
+				if(firstLine!=null){
+					if(firstLine.startsWith(spider.constant.ENABLE_GUI_INLINE_DIRECTION))
+						spider.config.enable_ide = true;
+					else if(firstLine.startsWith(spider.constant.DISABLE_GUI_INLINE_DIRECTION))
+						spider.config.enable_ide = false;
+				}
+			}
+		}
+		
+		//4. Init engine
+		if(spider.config.enable_ide){
+
+			spider.common.code_tracker = new CodeTracker();
+			spider.common.engine = new ScriptEngineWrapper(
+					spider.config.engine_js_name,
+					spider.common.code_tracker
+					);
+		} else {
+				
+			spider.common.engine = 
+					new ScriptEngineManager(null).getEngineByName(spider.config.engine_js_name);
+			spider.common.code_tracker = null;
+		}
+		
+		spider.common.anonymous_engine = 
+				new ScriptEngineManager(null).
+				getEngineByName(spider.config.engine_js_name);
+		
+		ScriptEngine engine = spider.common.engine;
+		
+		
+		//4b. put spider data to global space of js engine
+		
+			// then it should be mapped to spider.x object
+			//Java(Spider) -> js(spider.x)
+			engine.put("__SPIDER_GLOBAL__", spider);
+			
+		
+		//5. load built-ins
+			
+			//Java(Spider) -> js(spider.x)
+			spider.builtins = new Builtins(spider);	
+			
+			String filePath = spider.constant.PATH_BUILTINS_JS;
+			try {
+				
+				InputStream is;
+				is = Main.class.getResourceAsStream(filePath);
+				engine.eval(new InputStreamReader(is, "UTF8"));
+			
+			} catch (NullPointerException e) {
+				System.err.println("#ERROR file not found! "+filePath);
+			} catch (UnsupportedEncodingException | ScriptException ex) {
+				System.err.println("#ERROR while loading! "+filePath);
+				System.err.println(ex.getMessage());
+			}
+			
+	}
+
+	private static void featureLoad() {
+		 String item = spider.constant.PATH_CONFIG_JS;
+		 try {
+			 spider.builtins.include(item);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void executeScript() {
+		String item = "";
+		try{
+			for (String it : spider.common.programs) {
+				item = it;
+				spider.builtins.include(item);
+			}
+		} catch(Exception e){
+			return;
+		}
+	}
+	
+
+	private static void loadIDE(Spider sp) {
+	
+		Class<?> classToLoad;
+		try {
+			classToLoad = Class.forName (sp.config.ide);
+			SpiderIde instance = (SpiderIde) classToLoad.getConstructor(Spider.class).newInstance (sp);
+			instance.init();
+		} catch (Exception e) {
+			System.err.println("#ERROR: initialization GUI! " + sp.config.ide);
+			e.printStackTrace();
+		}
+		
+	}
+
+	/*****************************************************************************/
+	/*    L E V E L   2                                                          */
+	/*****************************************************************************/
+
+	private static void handleInvocationCommand(UnixCmdProcessor ucmd) {
+				
+		spider.config.engine_js_name = 
+				!ucmd.arguments.containsKey("engine")? 
+						System.getProperty("java.version").startsWith("1.8")?
+						"Nashorn" :							//^-engine & jre ver = 1.8
+						"JavaScript":							//^-engine & jre ver= ?,rhino
+						ucmd.arguments.get("engine") ; 		//-engine=abc
+						
+		spider.config.enable_ide = 
+				ucmd.arguments.containsKey("ide")? 
+						"no".equals(ucmd.arguments.get("ide"))?
+								false:			//-ide=no
+									true:		//-ide=[^no]
+										spider.config.enable_ide; 	//^-ide, check in code
+		
+		String strPaths = ucmd.arguments.get("paths");
+		List<String> ls1 = new LinkedList<String>();
+		//2nd processing
+		if(strPaths !=null)
+			ls1 = UnixCmdProcessor.seperateListObjects(strPaths, ";");
+		
+		
+		spider.config.lookupPaths.addAll(ls1);
+	
+		spider.common.programs.addAll(ucmd.objects);
+		
+	}
+	
+	/*****************************************************************************/
+	/*    I N T E R N A L   R O U T I N E S                                      */
+	/*****************************************************************************/
+
+	
+	
 }

@@ -4,19 +4,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileReader;
-import java.io.LineNumberReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
 
-import javax.script.Invocable;
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import javax.swing.JTextPane;
-
-import scriptlab.Constants;
-import scriptlab.EngineLoader;
-import scriptlab.Main;
-import scriptlab.ScriptLabGUI;
+import scriptlab.Spider;
 
 
 /******************************************************************************
@@ -25,122 +26,21 @@ import scriptlab.ScriptLabGUI;
  * @author tw81hc															  
  *																			  
  *****************************************************************************/
-public class builtins{
+public class Builtins{
 	
 
 
-	public builtins(){
+	private ScriptEngine engine = null;
+	private Spider spider = null;
+
+	public Builtins(Spider spi){
+		this.spider = spi;
+		engine = spi.common.engine;
 	}
 	
 	////////////////INFORMATION DECLARING /////////////////////////////////////
 	//////////////// OBJECTS UNDER CONTROL ////////////////////////////////////
 	//////////////// FUNCTIONS EXPOSED ////////////////////////////////////////
-
-	/**
-	 * create a new java object from a java interface and a js object by name.<p>
-	 * @param - {@code jso_name} name of javascript object
-	 * @param - {@code jv_classpath_str} class path of java interface/class
-	 */
-	public <T> Object convert(String jso_name, String jv_classpath_str){
-		
-		Class<T> inf =null;
-		 ClassLoader classLoader = builtins.class.getClassLoader();
-		 try {
-		        inf = (Class<T>) classLoader.loadClass(jv_classpath_str);
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-		 
-		Object obj = Main.engine.get(jso_name);
-		Invocable inv = (Invocable) Main.engine;
-		T act = inv.getInterface(obj, inf);
-		
-		return act;
-	}
-	 
-	
-	/**
-	 * find a javascript variable by a string name. <p>
-	 * provide user a method to access js variable with dynamic name.<p>
-	 * @param - string which is name of new variable
-	 */
-	 public Object find(String var_name){
-
-				return Main.engine.get(var_name);
-	}
-	 
-	/**
-	 * create javascript variable named by a string and valued by pre-defined obj. <p>
-	 * provide user a method to create variable with dynamic name.<p>
-	 * @param - {@code var_name} string which is name of new variable
-	 * 			{@code ref_obj_name} string name of reference object
-	 */
-	 public void copy(String var_name, String ref_obj_name){
-	 	try {
-			Main.engine.eval("var "+var_name+" = "+ref_obj_name +";");
-		} catch (ScriptException e) {
-			Console.print(e.getMessage(), Console.MSGTYPE_ERROR);
-		}
-	 }
-	 
-	/**
-	 * display Window or not.<p>
-	 * default is shown.
-	 * @param - {@code true} is hidden, {@code false} is shown
-	 */
-	public static void disableGUI(boolean option){
-		
-		Main.frame_disabled = option;
-		
-		if(Main.frame !=null){
-			Main.frame.setVisible(!option);
-		}
-	}
-	
-	/**
-	 * execute an javascript file based on its file path.
-	 * @param js_path
-	 * @return
-	 */
-	public static boolean eval(String js_path){
-		try {
-			
-			js_path = lookUpRealFilePath(js_path);
-			Main.engine.eval(new FileReader(js_path));
-			
-			return true;
-		} catch (Exception e) {
-			Console.print(e.getMessage(), Console.MSGTYPE_ERROR);
-			return false;
-		}
-	}
-	
-
-	//-----------------------------------------------------------------------//
-	
-	/**
-	 * Load an external jar library to program environment.
-	 * @param jar_url
-	 * @return
-	 */
-	public static boolean loadjar(String jar_url){
-		
-		jar_url = lookUpRealFilePath(jar_url);
-		return EngineLoader.loadJar(jar_url);
-		
-	}
-	
-	//-----------------------------------------------------------------------//
-	
-	/**
-	 * Load new java object based on its class, object must have constructor without parameters.<p>
-	 * @param path_class - path to class inside jar file
-	 * @return - loaded object
-	 */
-	public static Object loadclass(String  class_path) {
-		
-		return EngineLoader.loadClass(class_path);
-	}
 
 	//-----------------------------------------------------------------------//
 	
@@ -148,32 +48,66 @@ public class builtins{
 	 * print a message to console
 	 * @param msg
 	 */
-	public static void out(String msg) {
-
-		Console.print(msg, Console.MSGTYPE_INFO);	
+	public void out(String msg) {
+		System.out.println( msg);		
+	}
+	
+	//-----------------------------------------------------------------------//
+	/**
+	 * Load a js source
+	 * @param filePath
+	 * @throws Exception 
+	 */
+	public void include(String filePath) throws Exception{
+		InputStream is;
+		try {
 			
+			String realpath = Builtins.lookUpRealFilePath(filePath, spider.config.lookupPaths);
+			is = new FileInputStream(realpath);
+			engine.eval(new InputStreamReader(is, "UTF8"));
+			
+		} catch (FileNotFoundException e) {
+			System.err.println("#ERROR file not found! "+filePath);
+		} catch (UnsupportedEncodingException | ScriptException ex) {
+			System.err.println("#ERROR while running! "+filePath);
+			System.err.println(ex.getMessage());
+		}
+		
 	}
 	//-----------------------------------------------------------------------//
-	
 	/**
-	 * print a message to console in new line
-	 * @param msg
+	 * add jar library to JVM class path, from then packages can be imported .<p>
+	 * 
+	 * @param jar_url - path to jar file
+	 * @return - {@code true} if load OK, {@code false} if fail
 	 */
-	public static void outln(String msg) {
-		
-		out(msg + "\n");
-		
+	public boolean loadjar(String jar_url) {
+		try {
+			
+			String real_jar_url = lookUpRealFilePath(jar_url, spider.config.lookupPaths);
+			
+			File f = new File(real_jar_url);
+			URI u = f.toURI();
+			URLClassLoader urlClassLoader = (URLClassLoader) ClassLoader
+					.getSystemClassLoader();
+			Class<URLClassLoader> urlClass = URLClassLoader.class;
+			Method method;
+
+			method = urlClass.getDeclaredMethod("addURL",
+					new Class[] { URL.class });
+
+			method.setAccessible(true);
+			method.invoke(urlClassLoader, new Object[] { u.toURL() });
+			return true;
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.err.println("#ERROR: Load jar file! "+ jar_url +"\n"+e.getMessage());
+			return false;
+		}
 	}
 	//-----------------------------------------------------------------------//
-	
-	/**
-	 * clear console
-	 */
-	public static void clear() {
-		
-		Console.clear();
-		
-	}
+
 	//-----------------------------------------------------------------------//
 	
 	static Dialog diag;
@@ -186,13 +120,14 @@ public class builtins{
 	 * @param ivalue - initial value
 	 * @return typed string
 	 */
-	public static String input(String title, String ivalue) {
+	public String input(String title, String ivalue) {
 
-		diag = new Dialog(Main.frame);
+		diag = new Dialog(new Frame());
 		diag.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		diag.setTitle(title);
 		diag.setLayout(new FlowLayout(FlowLayout.CENTER));
 		txt = new TextField(ivalue, 25);
+	
 		txt.addActionListener(new ActionListener() {
 			
 			
@@ -216,33 +151,55 @@ public class builtins{
 	/**
 	 * exit program immediately
 	 */
-	public static void exit() {
+	public void exit() {
 		
 		System.exit(0);
 		
 	}
-	////////////////// INTERNAL ROUTINEs //////////////////////////////////////
+
+	/*****************************************************************************/
+	/*    I N T E R N A L   R O U T I N E S                                      */
+	/*****************************************************************************/
+
 	
 	/*
 	 * return real path of the file name. it may be absolute path,
 	 * cwd path or look up folder related path.
 	 */
-	private static String lookUpRealFilePath(String js_path){
+	public static String lookUpRealFilePath(String fpath, java.util.List<String> lookupPaths){
 		String fp = "";
 		
-		//if the file in current path
-		File f = new File(js_path);
+		//1. HIGH PRIORITY: if the file in current path
+		File f = new File(fpath);
 		if(f.exists()){
-			fp = js_path;
+			fp = fpath;
 		}
 		
-		//look up for the file in installed folder
+		//2. LOW PRIORITY: look up for the file in installed folder
 		else{
-			f = new File(Main.lookup_Path, js_path);
-			if(f.exists()){
-				fp =f.getAbsolutePath();
+			java.util.List<String> ss = lookupPaths;
+			for(String s : ss){
+				f = new File(s, fpath);
+				if(f.exists()){
+					fp =f.getAbsolutePath();
+					break;
+				}
 			}
 		}
+		
 		return fp;
 	}
+	
+	/**
+	 * due to some security reasons, j8 not allow to create engine in some cases
+	 * this function may help to solve the issue. 
+	 * this restrict function is not exposed to builtins.js, must access through 
+	 * spider.x
+	 * @return
+	 */
+	public ScriptEngine create_new_engine(){
+		return new ScriptEngineManager(null).
+				getEngineByName(spider.config.engine_js_name);
+	}
+
 }
