@@ -129,10 +129,6 @@ public class Main {
 			spider.common.code_tracker = null;
 		}
 		
-		spider.common.anonymous_engine = 
-				new ScriptEngineManager(null).
-				getEngineByName(spider.config.engine_js_name);
-		
 		ScriptEngine engine = spider.common.engine;
 		
 		

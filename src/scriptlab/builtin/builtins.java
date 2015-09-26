@@ -14,6 +14,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -195,11 +196,35 @@ public class Builtins{
 	 * this function may help to solve the issue. 
 	 * this restrict function is not exposed to builtins.js, must access through 
 	 * spider.x
+	 * @Deprecated invoke new ScriptEngineManager(null).getEngineByName() to create new one
 	 * @return
 	 */
+	@Deprecated
 	public ScriptEngine create_new_engine(){
 		return new ScriptEngineManager(null).
 				getEngineByName(spider.config.engine_js_name);
 	}
 
+	/**
+	 * create a new java object from a java interface and a js object by name.<p>
+	 * new_java_object = (java_inf) current_js_obj;
+	 * @param - {@code jso_name} name of javascript object
+	 * @param - {@code jv_classpath_str} class path of java interface/class
+	 */
+	public <T> Object cast2Java(String jso_name, String jv_inf_name){
+		
+		Class<T> inf =null;
+		 ClassLoader classLoader = Builtins.class.getClassLoader();
+		 try {
+		        inf = (Class<T>) classLoader.loadClass(jv_inf_name);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		 
+		Object obj = engine.get(jso_name);
+		Invocable inv = (Invocable) engine;
+		T act = inv.getInterface(obj, inf);
+		
+		return act;
+	}
 }

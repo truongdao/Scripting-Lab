@@ -66,10 +66,6 @@ public class Spider {
 		
 		//main engine program running on
 		public ScriptEngine engine = null;
-		
-		//backup engine for running anonymous functions 
-		//which shouldn't affect data on main engine
-		public ScriptEngine anonymous_engine = null;
 		public CodeTracker code_tracker = null;
 		
 	};

@@ -3,6 +3,9 @@ package scriptlab;
 import java.io.Reader;
 
 import javax.script.Bindings;
+import javax.script.Compilable;
+import javax.script.CompiledScript;
+import javax.script.Invocable;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
@@ -16,7 +19,7 @@ import javax.script.ScriptException;
  * @author pika
  *
  */
-public class ScriptEngineWrapper implements ScriptEngine {
+public class ScriptEngineWrapper implements ScriptEngine, Invocable, Compilable {
 
 	private ScriptEngine realEngine = null;
 	private CodeTracker tracker = null;
@@ -110,6 +113,30 @@ public class ScriptEngineWrapper implements ScriptEngine {
 	public void setContext(ScriptContext arg0) {
 		realEngine.setContext( arg0) ;
 
+	}
+	@Override
+	public <T> T getInterface(Class<T> clasz) {
+		return ((Invocable)realEngine).getInterface(clasz);
+	}
+	@Override
+	public <T> T getInterface(Object thiz, Class<T> clasz) {
+		return ((Invocable)realEngine).getInterface(thiz, clasz);
+	}
+	@Override
+	public Object invokeFunction(String name, Object... args) throws ScriptException, NoSuchMethodException {
+		return ((Invocable)realEngine).invokeFunction(name, args);
+	}
+	@Override
+	public Object invokeMethod(Object thiz, String name, Object... args) throws ScriptException, NoSuchMethodException {
+		return ((Invocable)realEngine).invokeMethod(thiz, name, args);
+	}
+	@Override
+	public CompiledScript compile(String arg0) throws ScriptException {
+		return ((Compilable)realEngine).compile(arg0);
+	}
+	@Override
+	public CompiledScript compile(Reader arg0) throws ScriptException {
+		return ((Compilable)realEngine).compile(arg0);
 	}
 
 }
