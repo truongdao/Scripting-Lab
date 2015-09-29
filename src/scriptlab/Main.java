@@ -120,12 +120,19 @@ public class Main {
 			spider.common.code_tracker = new CodeTracker();
 			spider.common.engine = new ScriptEngineWrapper(
 					spider.config.engine_js_name,
-					spider.common.code_tracker
+					spider.common.code_tracker,
+					spider.config.NASHORN_DEFAULT_OPTIONS
 					);
 		} else {
-				
-			spider.common.engine = 
-					new ScriptEngineManager(null).getEngineByName(spider.config.engine_js_name);
+			if("Nashorn".matches(spider.config.engine_js_name))	{
+				spider.common.engine = 
+					new NashornLoadingSupporter().getNashornScriptEngine(spider.config.NASHORN_DEFAULT_OPTIONS);
+			}
+			else
+			{
+				spider.common.engine = 
+						new ScriptEngineManager(null).getEngineByName(spider.config.engine_js_name);
+			}
 			spider.common.code_tracker = null;
 		}
 		

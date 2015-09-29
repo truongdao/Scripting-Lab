@@ -24,9 +24,16 @@ public class ScriptEngineWrapper implements ScriptEngine, Invocable, Compilable 
 	private ScriptEngine realEngine = null;
 	private CodeTracker tracker = null;
 	
-	public ScriptEngineWrapper(String eng_name, CodeTracker tracker) {
+	public ScriptEngineWrapper(String eng_name, CodeTracker tracker, String[] nashornOptions) {
 		
-		realEngine = new ScriptEngineManager(null).getEngineByName(eng_name);
+		if("Nashorn".matches(eng_name)){
+			//load Nashorn with default options
+			realEngine = new NashornLoadingSupporter().getNashornScriptEngine(nashornOptions);
+		}
+		else
+		{
+			realEngine = new ScriptEngineManager(null).getEngineByName(eng_name);
+		}
 		this.tracker = tracker;
 	}
 	@Override

@@ -14,8 +14,8 @@ public class CodeTracker {
 	
 	
 	public static class Record{
-		String codeString = null;
-		Reader codeReader = null;
+		public String codeString = null;
+		public Reader codeReader = null;
 		
 		public Record(String codeString){
 			this.codeString = codeString;

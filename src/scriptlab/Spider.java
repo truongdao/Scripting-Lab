@@ -59,6 +59,8 @@ public class Spider {
 		public String	ide="";	//classpath to IDE main  
 		public String engine_js_name = "Nashorn"; //'JavaScript' for Rhino j1.7
 		public List<String> lookupPaths = new LinkedList<String>();
+		public final String[] NASHORN_DEFAULT_OPTIONS = new String[] { "-scripting", "-doe" };
+		
 	};
 
 	public static class CommonClass{
