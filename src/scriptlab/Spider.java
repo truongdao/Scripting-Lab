@@ -44,7 +44,7 @@ public class Spider {
 		 * TODO	
 		 */
 		public final String GUIDE_BUILTINS =
-							"1. builtins: disableGUI(x), eval(x) , loadjar(x), loadclass(n,u,c), \n"
+							"1. builtins: spider.x.*, loadjar(url), include(js_url), \n"
 						+   "\t		out(x), outln(x), clear(), string input(), exit()\n"
 						+	"2. Short key: Alt + Enter -> execute all\n"
 						+	"\t 	Select text, Alt + Enter -> execute selected\n"
