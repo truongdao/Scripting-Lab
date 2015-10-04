@@ -35,6 +35,11 @@ public class Spider {
 		/**
 		 * program & author information.
 		 */
+		public final String VERSION = "2.0";
+				
+		/**
+		 * program & author information.
+		 */
 		public final String ABOUT_PROGRAM =
 				"Spider v2 (old Scripting Lab)\n" +
 				"Copyright (c) 2015 Truong Dao\n"+
@@ -50,8 +55,8 @@ public class Spider {
 						+	"\t 	Select text, Alt + Enter -> execute selected\n"
 						+	"\t 	Shift + Enter -> execute working line\n";
 		
-		public final String ENABLE_GUI_INLINE_DIRECTION = "/*spider.x.constant.enable_ide=true*/";
-		public final String DISABLE_GUI_INLINE_DIRECTION = "/*spider.x.constant.enable_ide=false*/";
+		public final String ENABLE_GUI_INLINE_DIRECTION = "/*spider.x.config.enable_ide=true*/";
+		public final String DISABLE_GUI_INLINE_DIRECTION = "/*spider.x.config.enable_ide=false*/";
 	};
 	
 	public static class ConfigClass{
